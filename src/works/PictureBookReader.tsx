@@ -2,7 +2,8 @@ import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'r
 import HTMLFlipBook from 'react-pageflip'
 import ImageViewer from './ImageViewer'
 
-const spreads = Array.from({ length: 18 }, (_, index) => `/images/works/dream-book/spread-${String(index + 1).padStart(2, '0')}.jpg`)
+const spreadFormat = import.meta.env.PROD ? 'webp' : 'jpg'
+const spreads = Array.from({ length: 18 }, (_, index) => `/images/works/dream-book/spread-${String(index + 1).padStart(2, '0')}.${spreadFormat}`)
 const pageSpecs = [
   { spread: 0, side: 'left', cover: true },
   ...spreads.slice(1).flatMap((_, index) => [{ spread: index + 1, side: 'left', cover: false }, { spread: index + 1, side: 'right', cover: false }]),
@@ -14,13 +15,25 @@ type FlipApi = { flipNext: (corner?: string) => void; flipPrev: (corner?: string
 type FlipRef = { pageFlip: () => FlipApi }
 
 const FlipLeaf = forwardRef<HTMLDivElement, { spread: number; side: string; cover: boolean; index: number }>((props, ref) => <div ref={ref} className={`flipbook-leaf flipbook-leaf--${props.side}`} data-density={props.cover ? 'hard' : 'soft'} aria-label={props.cover ? props.index === 0 ? '앞표지' : '뒤표지' : `${props.index}쪽`}>
-  <img src={spreads[props.spread]} alt="" draggable={false} decoding="sync" />
+  <img src={spreads[props.spread]} alt="" draggable={false} decoding="sync" loading={props.spread <= 1 ? 'eager' : 'lazy'} />
 </div>)
 FlipLeaf.displayName = 'FlipLeaf'
 
 export default function PictureBookReader({ unbound, onInteractionStateChange }: { unbound: boolean; onInteractionStateChange: (enabled: boolean) => void }) {
   const flip = useRef<FlipRef>(null)
   const position = useRef(0)
+  const decoded = useRef(new Map<number, Promise<void>>())
+  const alive = useRef(true)
+  useEffect(() => { alive.current = true; return () => { alive.current = false } }, [])
+  const loadSpread = useCallback((index: number) => {
+    let pending = decoded.current.get(index)
+    if (!pending) {
+      const image = new Image(); image.src = spreads[index]
+      pending = image.decode().catch(error => { decoded.current.delete(index); throw error })
+      decoded.current.set(index, pending)
+    }
+    return pending
+  }, [])
   const [current, setCurrent] = useState(0)
   const [ready, setReady] = useState(false)
   const [loadError, setLoadError] = useState(false)
@@ -41,10 +54,13 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
   const pages = useMemo(() => pageSpecs.map((page, index) => <FlipLeaf key={index} {...page} index={index} />), [])
   useEffect(() => {
     let active = true
-    Promise.all(spreads.map(src => { const image = new Image(); image.src = src; return image.decode() }))
+    Promise.all([loadSpread(0), loadSpread(1)])
       .then(() => { if (active) setReady(true) }).catch(() => { if (active) setLoadError(true) })
     return () => { active = false }
-  }, [])
+  }, [loadSpread])
+  useEffect(() => {
+    if (ready && !unbound) void loadSpread(pageSpecs[Math.min(current + 2, lastPage)].spread).catch(() => {})
+  }, [ready, current, unbound, loadSpread])
   useEffect(() => {
     if (!unbound && ready) { const frame = requestAnimationFrame(() => flip.current?.pageFlip()?.update()); return () => cancelAnimationFrame(frame) }
   }, [unbound, ready])
@@ -75,23 +91,35 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     setCenter(page === 0 ? 'front' : page === lastPage ? 'back' : 'open')
   }, [])
   const onState = useCallback((event: { data: string }) => setBusy(event.data !== 'read'), [])
-  const next = () => {
+  const next = async () => {
     const api = flip.current?.pageFlip()
     if (!api || locked || resetting) return
     if (current === lastPage) {
       if (reduced) { api.turnToPage(0); return }
       setBusy(true); setResetting(true); return
     }
-    setBusy(true); centerBook(current >= lastPage - 2 ? 'back' : 'open')
-    if (reduced) { api.turnToPage(current === 0 ? 1 : Math.min(current + 2, lastPage)); setBusy(false) }
-    else api.flipNext('top')
+    const target = current === 0 ? 1 : Math.min(current + 2, lastPage)
+    setBusy(true)
+    try {
+      await loadSpread(pageSpecs[target].spread)
+      if (!alive.current) return
+      centerBook(current >= lastPage - 2 ? 'back' : 'open')
+      if (reduced) { api.turnToPage(target); setBusy(false) }
+      else api.flipNext('top')
+    } catch { if (alive.current) setBusy(false) }
   }
-  const previous = () => {
+  const previous = async () => {
     const api = flip.current?.pageFlip()
     if (!api || current === 0 || locked || resetting) return
-    setBusy(true); centerBook(current <= 2 ? 'front' : 'open')
-    if (reduced) { api.turnToPage(current === lastPage ? lastPage - 2 : Math.max(0, current - 2)); setBusy(false) }
-    else api.flipPrev('top')
+    const target = current === lastPage ? lastPage - 2 : Math.max(0, current - 2)
+    setBusy(true)
+    try {
+      await loadSpread(pageSpecs[target].spread)
+      if (!alive.current) return
+      centerBook(current <= 2 ? 'front' : 'open')
+      if (reduced) { api.turnToPage(target); setBusy(false) }
+      else api.flipPrev('top')
+    } catch { if (alive.current) setBusy(false) }
   }
   useEffect(() => {
     if (!closing) return
@@ -110,11 +138,16 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     if (reduced) { api.turnToPage(side === 'front' ? 0 : lastPage); return }
     setBusy(true); setClosing(side)
   }
-  const jump = (page: number) => {
+  const jump = async (page: number) => {
     const api = flip.current?.pageFlip()
     if (!api || locked || resetting) return
-    centerBook(page === 0 ? 'front' : page === lastPage ? 'back' : 'open')
-    api.turnToPage(page)
+    setBusy(true)
+    try {
+      await loadSpread(pageSpecs[page].spread)
+      if (!alive.current) return
+      centerBook(page === 0 ? 'front' : page === lastPage ? 'back' : 'open')
+      api.turnToPage(page)
+    } finally { if (alive.current) setBusy(false) }
   }
 
   return <section id="picture-book-reader" className="picture-reader" aria-label="네가 잠들면 꿈꾸는 건 나 그림책 읽기">
