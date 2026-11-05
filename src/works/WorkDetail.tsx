@@ -70,6 +70,10 @@ export default function WorkDetail({ work }: { work: Work }) {
             <p className="detail-page-artist">박서음</p>
             <p className="detail-page-meta" ref={release}>{album.releaseDate} / 싱글 / 발라드</p>
             <p className="detail-page-meta">{album.label} / 미러볼뮤직</p>
+            {work.id === 'dream-song' && <nav className="album-related-links" aria-label="이 노래에서 이어지는 작업">
+              <a href={archiveUrl('dream-book')} onClick={event => follow(event, archiveUrl('dream-book'))}>그림책 펼치기 ↗</a>
+              <a href={archiveUrl('dream-exhibition')} onClick={event => follow(event, archiveUrl('dream-exhibition'))}>전시 놀러가기 ↗</a>
+            </nav>}
             <nav className="detail-section-nav" ref={sectionButtons} aria-label="앨범 상세 항목"><a href="#album-intro">앨범 소개</a><a href="#album-lyrics">가사</a><a href="#album-credits">크레딧</a></nav>
           </> : <>
             <p className="detail-page-meta">{[work.genre, work.date ?? work.year, work.format].filter(Boolean).join(' / ')}</p>

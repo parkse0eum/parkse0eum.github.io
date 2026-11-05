@@ -54,3 +54,5 @@ import image from './assets/library/projects/blue-or-not.png'
 책 각 면의 현재 이미지 경로는 `src/book/content.ts`에서 관리합니다. 표지는 `src/App.tsx`, 홈 배경과 표지 마스크는 `src/App.css`에 있습니다. `misc/image-01.png`, `misc/image-02.png`는 원래 이름이 숫자라 용도를 추정하지 않고 보관했습니다.
 
 추가 면은 `src/assets/library/book/works.png` 원본 한 장을 사용합니다. 비율을 유지해 확대하고, 연필 곡선을 삼각형 아래 양 끝에 맞춥니다.
+
+파비콘 원본은 `src/assets/brand/favicon-original.jpg`에 보관합니다. `node scripts/prepare-favicon.mjs`로 원형 PNG·ICO를 다시 만들 수 있습니다. 그림책의 유튜브 재생기는 헤드폰을 누를 때만 불러오며, 작가가 제공한 네잠꿈나 재생목록을 사용합니다.
