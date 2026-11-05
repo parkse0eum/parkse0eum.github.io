@@ -510,3 +510,25 @@ body:has(.image-viewer[open]){overflow:hidden}
 /* Leave room below the shared fixed masthead, including direct detail URLs. */
 .works-page{padding-top:var(--site-header-height)}
 .works-page [id]{scroll-margin-top:calc(var(--site-header-height) + 24px)}
+
+/* A quiet, shared path between the song, picture book and exhibition. */
+.dream-navigation{display:flex;justify-content:center;align-items:center;gap:20px;padding:22px 20px 12px;font-size:13px;line-height:1.7;letter-spacing:-.02em}
+.dream-navigation-step{display:flex;align-items:center;gap:20px}
+.dream-navigation-arrow{color:#bbb;font-size:12px;font-weight:400}
+.dream-navigation a{color:#92928b;padding:3px 0;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
+.dream-navigation a:hover{color:#292923;border-bottom-color:#b7b7ad}
+.dream-navigation a[aria-current=page]{color:#292923;font-weight:650;border-bottom-color:#292923}
+@media(max-width:650px){.dream-navigation,.dream-navigation-step{gap:16px}.dream-navigation{padding-top:18px;padding-bottom:4px;font-size:12px}}
+
+/* Match the reference's soft-paper turn, with one duration for the paper,
+   book centering and cover gestures instead of competing 750/800/850ms clocks. */
+.picture-reader{--picture-turn-duration:1000ms}
+.pf-center{transition-duration:var(--picture-turn-duration);transition-timing-function:cubic-bezier(.25,.1,.25,1)}
+.pf-reader-stage{perspective:none}
+.flipbook-leaf{backface-visibility:visible;-webkit-backface-visibility:visible}
+.pf-shut,.pf-reset-cover{animation-duration:var(--picture-turn-duration);animation-timing-function:cubic-bezier(.25,.1,.25,1)}
+.pf-shut{perspective:2000px}
+.pf-shut-flap{animation-duration:var(--picture-turn-duration);animation-timing-function:cubic-bezier(.25,.1,.25,1)}
+.pf-reset-cover{transform-origin:center center}
+@media(prefers-reduced-motion:reduce){.pf-center{transition:none}.pf-shut,.pf-shut-flap,.pf-reset-cover{animation:none}}
+.pf-reader-stage:has(.pf-reset-cover){perspective:2000px}

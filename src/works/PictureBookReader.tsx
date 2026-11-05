@@ -9,30 +9,37 @@ const pageSpecs = [
   ...spreads.slice(1).flatMap((_, index) => [{ spread: index + 1, side: 'left', cover: false }, { spread: index + 1, side: 'right', cover: false }]),
   { spread: 0, side: 'right', cover: true },
 ]
+const turnDuration = 1000
 const lastPage = pageSpecs.length - 1
 const pageLabel = (page: number) => page === 0 ? '앞표지' : page === lastPage ? '뒤표지' : `${page % 2 ? page : page - 1}–${page % 2 ? page + 1 : page} / 34쪽`
 type FlipApi = { flipNext: (corner?: string) => void; flipPrev: (corner?: string) => void; flip: (page: number, corner?: string) => void; turnToPage: (page: number) => void; getState: () => string; update: () => void }
 type FlipRef = { pageFlip: () => FlipApi }
 
-const FlipLeaf = forwardRef<HTMLDivElement, { spread: number; side: string; cover: boolean; index: number }>((props, ref) => <div ref={ref} className={`flipbook-leaf flipbook-leaf--${props.side}`} data-density={props.cover ? 'hard' : 'soft'} aria-label={props.cover ? props.index === 0 ? '앞표지' : '뒤표지' : `${props.index}쪽`}>
-  <img src={spreads[props.spread]} alt="" draggable={false} decoding="sync" loading={props.spread <= 1 ? 'eager' : 'lazy'} />
+const FlipLeaf = forwardRef<HTMLDivElement, { spread: number; side: string; cover: boolean; index: number }>((props, ref) => <div ref={ref} className={`flipbook-leaf flipbook-leaf--${props.side}`} data-density="soft" aria-label={props.cover ? props.index === 0 ? '앞표지' : '뒤표지' : `${props.index}쪽`}>
+  <img src={spreads[props.spread]} alt="" draggable={false} decoding="async" loading={props.spread <= 1 ? 'eager' : 'lazy'} />
 </div>)
 FlipLeaf.displayName = 'FlipLeaf'
 
 export default function PictureBookReader({ unbound, onInteractionStateChange }: { unbound: boolean; onInteractionStateChange: (enabled: boolean) => void }) {
   const flip = useRef<FlipRef>(null)
+  const reader = useRef<HTMLElement>(null)
   const position = useRef(0)
   const decoded = useRef(new Map<number, Promise<void>>())
   const alive = useRef(true)
   useEffect(() => { alive.current = true; return () => { alive.current = false } }, [])
-  const loadSpread = useCallback((index: number) => {
+  const loadSpread = useCallback(async (index: number) => {
     let pending = decoded.current.get(index)
     if (!pending) {
       const image = new Image(); image.src = spreads[index]
       pending = image.decode().catch(error => { decoded.current.delete(index); throw error })
       decoded.current.set(index, pending)
     }
-    return pending
+    await pending
+    // Decode the actual paper faces too: a cached preload alone does not force
+    // a lazy <img> to paint before the animation starts on mobile browsers.
+    await Promise.all(Array.from(reader.current?.querySelectorAll<HTMLImageElement>('.flipbook-leaf img') ?? [])
+      .filter(image => image.getAttribute('src') === spreads[index])
+      .map(image => { image.loading = 'eager'; return image.decode() }))
   }, [])
   const [current, setCurrent] = useState(0)
   const [ready, setReady] = useState(false)
@@ -71,12 +78,12 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
       flip.current?.pageFlip()?.turnToPage(0)
       position.current = 0; setCurrent(0); setCenter('front')
       firstFrame = requestAnimationFrame(() => { secondFrame = requestAnimationFrame(() => { setResetting(false); setBusy(false) }) })
-    }, 850)
+    }, turnDuration + 50)
     return () => { window.clearTimeout(timer); cancelAnimationFrame(firstFrame); cancelAnimationFrame(secondFrame) }
   }, [resetting])
   useEffect(() => {
     if (!centering) return
-    const timer = window.setTimeout(() => setCentering(false), 850)
+    const timer = window.setTimeout(() => setCentering(false), turnDuration + 100)
     return () => window.clearTimeout(timer)
   }, [centering])
   const centerBook = (target: string) => {
@@ -128,7 +135,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
       flip.current?.pageFlip()?.turnToPage(closing === 'front' ? 0 : lastPage)
       setCenter(closing)
       firstFrame = requestAnimationFrame(() => { secondFrame = requestAnimationFrame(() => { setClosing(null); setBusy(false) }) })
-    }, 800)
+    }, turnDuration + 50)
     return () => { window.clearTimeout(timer); cancelAnimationFrame(firstFrame); cancelAnimationFrame(secondFrame) }
   }, [closing])
   const closeBook = () => {
@@ -150,7 +157,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     } finally { if (alive.current) setBusy(false) }
   }
 
-  return <section id="picture-book-reader" className="picture-reader" aria-label="네가 잠들면 꿈꾸는 건 나 그림책 읽기">
+  return <section ref={reader} id="picture-book-reader" className="picture-reader" aria-label="네가 잠들면 꿈꾸는 건 나 그림책 읽기">
     <div className="pf-reader-bound" hidden={unbound}>
       <div className="pf-reader-stage" tabIndex={0} aria-busy={!ready || locked} aria-label="그림책. 좌우 방향키 또는 아래 버튼으로 넘길 수 있습니다." onKeyDown={event => {
         if (event.key === 'ArrowLeft') { event.preventDefault(); previous() }
@@ -160,7 +167,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
       }}>
         {!ready ? <p className="pf-loading" role="status">{loadError ? '그림책을 불러오지 못했어요. 페이지를 새로고침해 주세요.' : '그림책을 펼칠 준비 중…'}</p> : <>
           <div className={`pf-center pf-center--${center}${resetting || closing ? ' pf-center--resetting' : ''}`} onTransitionEnd={event => { if (event.target === event.currentTarget && event.propertyName === 'transform') setCentering(false) }}>
-            <HTMLFlipBook ref={flip} width={440} height={622} size="stretch" minWidth={100} maxWidth={550} minHeight={140} maxHeight={778} startPage={0} drawShadow flippingTime={750} usePortrait={false} startZIndex={0} autoSize maxShadowOpacity={0.25} showCover mobileScrollSupport clickEventForward={false} useMouseEvents={false} swipeDistance={30} showPageCorners={false} disableFlipByClick className="picture-flipbook" style={{}} renderOnlyPageLengthChange onFlip={onFlip} onChangeState={onState}>{pages}</HTMLFlipBook>
+            <HTMLFlipBook ref={flip} width={440} height={622} size="stretch" minWidth={100} maxWidth={550} minHeight={140} maxHeight={778} startPage={0} drawShadow flippingTime={turnDuration} usePortrait={false} startZIndex={0} autoSize maxShadowOpacity={0.5} showCover mobileScrollSupport clickEventForward={false} useMouseEvents={false} swipeDistance={30} showPageCorners={false} disableFlipByClick className="picture-flipbook" style={{}} renderOnlyPageLengthChange onFlip={onFlip} onChangeState={onState}>{pages}</HTMLFlipBook>
           </div>
           {!locked && <button className={`pf-book-toggle${current === 0 || current === lastPage ? ' pf-book-toggle--cover' : ''}`} type="button" aria-label={current === 0 ? '표지를 열어 그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : '펼쳐진 그림책 덮기'} onClick={current === 0 || current === lastPage ? next : closeBook} />}
           {closing && <div className={`pf-shut pf-shut--${closing}`} aria-hidden="true"><div className="pf-shut-left" style={{ backgroundImage: `url('${spreads[pageSpecs[current].spread]}')` }} /><div className="pf-shut-flap"><div className="pf-shut-face" style={{ backgroundImage: `url('${spreads[pageSpecs[current].spread]}')` }} /><div className="pf-shut-face pf-shut-back" style={{ backgroundImage: `url('${spreads[0]}')` }} /></div></div>}

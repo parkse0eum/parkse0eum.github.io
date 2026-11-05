@@ -1,3 +1,4 @@
+import DreamNavigation from './DreamNavigation'
 import { exhibitionArtists } from './exhibitionArtists'
 import OccasionText from './OccasionText'
 import { useEffect, useLayoutEffect, useRef } from 'react'
@@ -35,7 +36,8 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
       event.preventDefault()
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
-    }}>← 작품 전체 보기</a></nav>
+    }}>← 모든 이야기</a></nav>
+    <DreamNavigation currentId={work.id} />
     <article>
       <div className="detail-page-layout" ref={layout}>
         <div className="detail-page-art">{work.image && <img ref={poster} src={work.image} alt={`${work.title} 2인전 포스터`} />}</div>
@@ -71,6 +73,6 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
     <footer className="detail-page-footer"><a href={archiveUrl()} onClick={event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
       event.preventDefault(); navigate(archiveUrl())
-    }}>← 작품 전체 보기</a></footer>
+    }}>← 모든 이야기</a></footer>
   </main>
 }

@@ -33,7 +33,7 @@ export default function LiteratureDetail({ work, book }: { work: Work; book: Boo
       e.preventDefault()
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
-    }}>← 작품 전체 보기</a></nav>
+    }}>← 모든 이야기</a></nav>
     <BookNavigation currentId={work.id} />
     <article>
       <div className="detail-page-layout" ref={layout}>
@@ -70,6 +70,6 @@ export default function LiteratureDetail({ work, book }: { work: Work; book: Boo
     <footer className="detail-page-footer"><a href={archiveUrl()} onClick={e => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
       e.preventDefault(); navigate(archiveUrl())
-    }}>← 작품 전체 보기</a></footer>
+    }}>← 모든 이야기</a></footer>
   </main>
 }
