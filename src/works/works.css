@@ -544,13 +544,14 @@ body:has(.image-viewer[open]){overflow:hidden}
 
 .picture-book-reset-icon{display:inline-block;vertical-align:-.15em;margin-left:6px}
 
-/* The paper takes the former side-arrow gutters; navigation sits below it. */
-.pf-reader-stage{--reader-gutter:min(40px,4vw);width:calc(100% + var(--reader-gutter) + var(--reader-gutter));margin-inline:calc(0px - var(--reader-gutter))}
+/* Reserve viewport height for the fixed header and bottom pagination. */
+.picture-reader{max-width:min(1180px,calc((100svh - var(--site-header-height) - 104px) * 880 / 622))}
+.pf-reader-stage{width:100%;margin-inline:0}
 .picture-reader-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;color:#777;font-size:12px;line-height:1.7}
 .picture-reader-pagination .picture-reader-page-number{margin:0;min-width:92px}
 .picture-reader-pagination button{display:grid;place-items:center;flex:none;min-width:32px;min-height:36px;padding:0;border:0;background:none;color:inherit;font:inherit;font-size:16px;cursor:pointer}
 .picture-reader-pagination button:disabled{opacity:.3;cursor:default}
-@media(max-width:650px){.pf-reader-stage{--reader-gutter:16px}.picture-reader-pagination{margin-top:18px}}
+@media(max-width:650px){.picture-reader-pagination{margin-top:18px}}
 
 /* Keep archive controls quieter than the works they introduce. */
 .archive-filterbar{gap:3vw;padding-top:14px;padding-bottom:22px}

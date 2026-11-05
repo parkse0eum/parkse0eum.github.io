@@ -116,6 +116,15 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     if (centerMode.current !== target && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setCentering(true)
     centerMode.current = target
     setCenter(target)
+    if (page > 0 && page < lastPage) requestAnimationFrame(() => {
+      if (!alive.current || !reader.current) return
+      const bounds = reader.current.getBoundingClientRect()
+      const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 64
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight
+      if (bounds.top < headerHeight + 12 || bounds.bottom > viewportHeight - 12) {
+        reader.current.scrollIntoView({ block: 'start', inline: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+      }
+    })
   }, [])
   const onState = useCallback((event: { data: string }) => {
     // A corner preview is interactive, not a running page turn.
