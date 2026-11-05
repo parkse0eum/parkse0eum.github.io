@@ -545,3 +545,5 @@ body:has(.image-viewer[open]){overflow:hidden}
 .picture-flipbook :is(.stf__hardShadow,.stf__hardInnerShadow){display:none!important}
 /* Center the square artwork itself against the book cover, not its caption. */
 .exhibition-related-song{transform:translateY(calc(var(--related-book-height,197px) / 2 - var(--related-art-width) / 2))}
+
+.picture-book-reset-icon{display:inline-block;vertical-align:-.15em;margin-left:6px}
