@@ -16,8 +16,8 @@ export const PAGE_LAYOUTS: PageLayout[] = [
     { label: 'Blue or Nah', stretch: true, source: [788, 1100], image: '/images/home/blue.webp', href: '?view=works&work=blue-or-not' },
   ] },
   { id: 'music', icons: [
-    { label: '캐모마일 달리기', source: [2775, 2622], image: chamomile },
-    { label: '네가 잠들면 꿈꾸는 건 나', source: [2775, 2622], image: dream },
+    { label: '캐모마일 달리기', source: [2775, 2622], image: chamomile, href: '?view=works&work=chamomile' },
+    { label: '네가 잠들면 꿈꾸는 건 나', source: [2775, 2622], image: dream, href: '?view=works&work=dream-song' },
   ] },
   { id: 'extra', icons: [] },
   { id: 'contact', icons: [] },
