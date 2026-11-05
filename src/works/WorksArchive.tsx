@@ -51,7 +51,7 @@ export default function WorksArchive() {
   if (selected && !eventWork) return <WorkDetail key={selected.id} work={selected} />
 
   return <main className="works-page">
-      <header className="archive-header"><a className="archive-brand" href="/" aria-label="박서음 홈" onClick={event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); navigate('/') } }}><img src="/images/brand/parkse0eum-black.png" alt="박서음" /></a><div><a href="/" onClick={e => { e.preventDefault(); navigate('/') }}>집으로 ↙</a></div></header>
+
       {eventWork && <EventDialog key={eventWork.id} work={eventWork} />}
       <div className="archive-content">
         <h1 className="sr" ref={title} tabIndex={-1}>작품 아카이브</h1>

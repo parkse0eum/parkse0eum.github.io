@@ -28,12 +28,12 @@ export default function LiteratureDetail({ work, book }: { work: Work; book: Boo
   }, [])
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
   return <main className="works-page work-page literature-page">
-    <header className="detail-page-header"><a href={archiveUrl()} onClick={e => {
+    <nav className="detail-page-header" aria-label="작품 목록으로"><a href={archiveUrl()} onClick={e => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
       e.preventDefault()
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
-    }}>← 작품 전체 보기</a><span>parkse0eum</span></header>
+    }}>← 작품 전체 보기</a></nav>
     <BookNavigation currentId={work.id} />
     <article>
       <div className="detail-page-layout" ref={layout}>

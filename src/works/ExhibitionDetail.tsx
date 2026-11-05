@@ -30,12 +30,12 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
   }, [])
   useEffect(() => { title.current?.focus({ preventScroll: true }) }, [])
   return <main className="works-page work-page exhibition-page">
-    <header className="detail-page-header"><a href={archiveUrl()} onClick={event => {
+    <nav className="detail-page-header" aria-label="작품 목록으로"><a href={archiveUrl()} onClick={event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
       event.preventDefault()
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
-    }}>← 작품 전체 보기</a><span>parkse0eum</span></header>
+    }}>← 작품 전체 보기</a></nav>
     <article>
       <div className="detail-page-layout" ref={layout}>
         <div className="detail-page-art">{work.image && <img ref={poster} src={work.image} alt={`${work.title} 2인전 포스터`} />}</div>

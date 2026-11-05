@@ -10,12 +10,12 @@ export default function PictureBookDetail({ work }: { work: Work }) {
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
   return <main className="works-page work-page picture-book-page">
-    <header className="detail-page-header"><a href={archiveUrl()} onClick={event => {
+    <nav className="detail-page-header" aria-label="작품 목록으로"><a href={archiveUrl()} onClick={event => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
       event.preventDefault()
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
-    }}>← 작품 전체 보기</a><span>parkse0eum</span></header>
+    }}>← 작품 전체 보기</a></nav>
     <BookNavigation currentId={work.id} />
     <article>
       <div className="picture-book-heading">

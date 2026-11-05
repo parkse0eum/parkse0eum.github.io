@@ -506,3 +506,7 @@ body:has(.image-viewer[open]){overflow:hidden}
 .picture-book-mode-link{display:block;margin:14px 0 0;padding:0;border:0;border-bottom:1px solid #aaa;background:none;color:#666;font:inherit;font-size:12px;line-height:1.8;cursor:pointer}
 .picture-book-mode-link:disabled{opacity:.4;cursor:default}
 .picture-reader-page-number{margin:28px 0 0;text-align:center;font-size:12px;line-height:1.7;color:#777;font-variant-numeric:tabular-nums}
+
+/* Leave room below the shared fixed masthead, including direct detail URLs. */
+.works-page{padding-top:var(--site-header-height)}
+.works-page [id]{scroll-margin-top:calc(var(--site-header-height) + 24px)}

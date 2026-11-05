@@ -48,15 +48,14 @@ export default function WorkDetail({ work }: { work: Work }) {
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
 
   return <main className={`works-page work-page${album ? ' work-page--music' : ''}`}>
-    <header className="detail-page-header">
+    <nav className="detail-page-header" aria-label="작품 목록으로">
       <a href={archiveUrl()} onClick={e => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
         e.preventDefault()
         if (window.history.state?.fromArchive) window.history.back()
         else navigate(archiveUrl())
       }}>← 작품 전체 보기</a>
-      <span>parkse0eum</span>
-    </header>
+    </nav>
     {album && <nav className="detail-album-nav" aria-label="개인 음악">{works.filter(item => item.category === '음악').map(item => <a key={item.id} href={archiveUrl(item.id)} aria-current={item.id === work.id ? 'page' : undefined} onClick={e => follow(e, archiveUrl(item.id))}>{item.title}</a>)}</nav>}
     {work.category === '문학' && <BookNavigation currentId={work.id} />}
     <article>

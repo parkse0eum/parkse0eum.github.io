@@ -22,7 +22,7 @@ function Home() {
   useLayoutEffect(() => mountBook(host.current!), [])
 
   return <div ref={host} className="home-page">
-    <header className="topbar"><img className="home-brand" src="/images/brand/parkse0eum-black.png" alt="박서음" /><span className="home-brand-name">parkse0eum</span></header>
+
     <main className="stage">
       <div className="cover-intro"><button className="cover-hit" id="coverHit" type="button" aria-expanded="false" aria-controls="accordionBook" aria-label="집 표지를 열고 아코디언북 펼치기" /></div>
       <section className="lep" id="accordionBook" role="region" aria-roledescription="캐러셀" aria-label="박서음의 아코디언북" data-lep="" inert aria-hidden="true">
@@ -61,7 +61,15 @@ function Home() {
   </div>
 }
 
+function SiteHeader() {
+  return <header className="topbar site-header"><a className="site-header-brand" href="/" aria-label="박서음 홈" onClick={event => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    navigate('/')
+  }}><img className="home-brand" src="/images/brand/parkse0eum-black.png" alt="" /><span className="home-brand-name">parkse0eum</span></a></header>
+}
+
 export default function App() {
   const search = useLocationSearch()
-  return new URLSearchParams(search).get('view') === 'works' ? <Suspense fallback={<div className="archive-loading" role="status">이야기를 펼치는 중…</div>}><WorksArchive /></Suspense> : <Home />
+  return <><SiteHeader />{new URLSearchParams(search).get('view') === 'works' ? <Suspense fallback={<div className="archive-loading" role="status">이야기를 펼치는 중…</div>}><WorksArchive /></Suspense> : <Home />}</>
 }
