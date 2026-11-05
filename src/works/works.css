@@ -497,11 +497,7 @@ body:has(.image-viewer[open]){overflow:hidden}
 .pf-shut--front .pf-shut-flap{inset:0 50% 0 0;transform-origin:right center;animation-name:picture-turn-previous}
 .pf-shut--front .pf-shut-face{background-position:left center}
 @keyframes pf-shut-front-center{from{transform:translateX(0)}to{transform:translateX(-25%)}}
-.pf-edge-nav{position:absolute;inset:0 -40px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;z-index:5}
-.pf-edge-nav button{display:grid;place-items:center;width:32px;height:44px;flex:none;border:0;background:none;padding:0;font:inherit;font-size:22px;color:#555;cursor:pointer;pointer-events:auto}
-.pf-edge-nav button:disabled{visibility:hidden;pointer-events:none}
 .pf-reader-bound>.picture-reader-mode{margin-top:28px}
-@media(max-width:650px){.pf-edge-nav{inset-inline:-16px}.pf-edge-nav button{width:24px;font-size:18px}}
 
 .picture-book-mode-link{display:block;margin:14px 0 0;padding:0;border:0;border-bottom:1px solid #aaa;background:none;color:#666;font:inherit;font-size:12px;line-height:1.8;cursor:pointer}
 .picture-book-mode-link:disabled{opacity:.4;cursor:default}
@@ -547,3 +543,11 @@ body:has(.image-viewer[open]){overflow:hidden}
 .exhibition-related-song{transform:translateY(calc(var(--related-book-height,197px) / 2 - var(--related-art-width) / 2))}
 
 .picture-book-reset-icon{display:inline-block;vertical-align:-.15em;margin-left:6px}
+
+/* The paper takes the former side-arrow gutters; navigation sits below it. */
+.pf-reader-stage{--reader-gutter:min(40px,4vw);width:calc(100% + var(--reader-gutter) + var(--reader-gutter));margin-inline:calc(0px - var(--reader-gutter))}
+.picture-reader-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;color:#777;font-size:12px;line-height:1.7}
+.picture-reader-pagination .picture-reader-page-number{margin:0;min-width:92px}
+.picture-reader-pagination button{display:grid;place-items:center;flex:none;min-width:32px;min-height:36px;padding:0;border:0;background:none;color:inherit;font:inherit;font-size:16px;cursor:pointer}
+.picture-reader-pagination button:disabled{opacity:.3;cursor:default}
+@media(max-width:650px){.pf-reader-stage{--reader-gutter:16px}.picture-reader-pagination{margin-top:18px}}
