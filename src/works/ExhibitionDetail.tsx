@@ -1,4 +1,3 @@
-import DreamNavigation from './DreamNavigation'
 import { exhibitionArtists } from './exhibitionArtists'
 import OccasionText from './OccasionText'
 import { useEffect, useLayoutEffect, useRef } from 'react'
@@ -13,6 +12,8 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
   const poster = useRef<HTMLImageElement>(null)
   const info = useRef<HTMLDivElement>(null)
   const artist = useRef<HTMLParagraphElement>(null)
+  const related = useRef<HTMLElement>(null)
+  const bookCover = useRef<HTMLImageElement>(null)
   const copy = occasions[work.id]
   const book = works.find(item => item.id === 'dream-book')
   const song = works.find(item => item.id === 'dream-song')
@@ -20,12 +21,14 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
     let active = true
     const align = () => {
       if (!active || !layout.current) return
+      if (related.current && bookCover.current) related.current.style.setProperty('--related-book-height', `${bookCover.current.getBoundingClientRect().height}px`)
       layout.current.style.setProperty('--exhibition-poster-height', `${poster.current?.getBoundingClientRect().height ?? 0}px`)
       layout.current.style.setProperty('--exhibition-related-offset', `${Math.max(0, (artist.current?.getBoundingClientRect().top ?? 0) - (info.current?.getBoundingClientRect().top ?? 0))}px`)
     }
     const observer = new ResizeObserver(align)
     if (poster.current) observer.observe(poster.current)
     if (info.current) observer.observe(info.current)
+    if (bookCover.current) observer.observe(bookCover.current)
     document.fonts.ready.then(align)
     align()
     return () => { active = false; observer.disconnect() }
@@ -38,7 +41,6 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
       if (window.history.state?.fromArchive) window.history.back()
       else navigate(archiveUrl())
     }}>← 모든 이야기</a></nav>
-    <DreamNavigation currentId={work.id} />
     <article>
       <div className="detail-page-layout" ref={layout}>
         <div className="detail-page-art">{work.image && <img ref={poster} src={work.image} alt={`${work.title} 2인전 포스터`} />}</div>
@@ -50,7 +52,7 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
           <div className="exhibition-shop-link"><a href="https://smartstore.naver.com/kamereon/products/13854348106" target="_blank" rel="noopener noreferrer">카메레온 선물가게 : 전시 굿즈 판매 ↗</a></div>
           <nav className="detail-section-nav exhibition-section-nav" aria-label="전시 상세 항목"><a href="#exhibition-intro">전시 소개</a><a href="#exhibition-artists">작가 소개</a><a href="#exhibition-map">전시 지도</a></nav>
         </div>
-        {book?.image && <aside className="exhibition-related-book" aria-label="함께 이어지는 음악과 그림책">
+        {book?.image && <aside ref={related} className="exhibition-related-book" aria-label="함께 이어지는 음악과 그림책">
           {song?.image && <a className="exhibition-related-song" href={archiveUrl(song.id)} onClick={event => {
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
             event.preventDefault(); navigate(archiveUrl(song.id))
@@ -58,7 +60,7 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
           <a href={archiveUrl(book.id)} onClick={event => {
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
             event.preventDefault(); navigate(archiveUrl(book.id))
-          }}><img src={book.image} alt={`그림책 『${book.title}』 상세 보기`} /><span>그림책 펼치기</span></a>
+          }}><img ref={bookCover} src={book.image} alt={`그림책 『${book.title}』 상세 보기`} /><span>그림책 펼치기</span></a>
         </aside>}
       </div>
       <div className="detail-page-body"><div className="detail-reading-column">

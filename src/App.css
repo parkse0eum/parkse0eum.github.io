@@ -214,7 +214,7 @@ button:focus-visible, a:focus-visible { outline:2px solid #4458aa;outline-offset
 
 .cover-hit { position:fixed;inset:auto;clip-path:polygon(50% 0,100% 28%,83% 42%,83% 100%,17% 100%,17% 42%,0 28%); }
 
-.cover-hit:focus-visible { outline:none;background:#fff8; }
+.cover-hit:focus-visible { outline:2px solid #4458aa;outline-offset:4px;background:transparent; }
 
 
 
@@ -364,3 +364,7 @@ body { font-family: 'Pretendard', sans-serif; font-weight: 500; }
 .site-header .home-brand{width:56px;height:56px;margin-left:-8px;object-fit:contain}
 .site-header .home-brand-name{font-family:'Home Pretendard','Pretendard',sans-serif;font-size:14px;font-weight:400;letter-spacing:-.025em;line-height:1.5;margin-left:-2px}
 @media(max-width:600px){:root{--site-header-height:56px}}
+
+/* Touch feedback must not paint the transparent house hit area as a rectangle. */
+.home-page :is(button,a){-webkit-tap-highlight-color:transparent}
+.cover-hit,.cover-hit:active,.cover-hit:focus{background:transparent}

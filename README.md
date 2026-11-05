@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-빌드 결과는 `dist/`에 생성됩니다. `main` 브랜치에 푸시하면 기존 Cloudflare Workers Builds 연결이 빌드하여 https://parkse0eum.com 에 배포합니다. GitHub Pages 주소와 실제 도메인의 Cloudflare 배포는 별개입니다.
+빌드 결과는 `dist/`에 생성됩니다. `main` 브랜치에 푸시하면 기존 Cloudflare Workers Builds 연결이 빌드하여 https://parkse0eum.com 에 배포합니다. GitHub Pages 주소와 실제 도메인의 Cloudflare 배포는 별개입니다. `wrangler.jsonc`와 `worker.mjs`는 HTML 진입 요청을 HTTPS로 전환하고 HSTS를 적용합니다. 이미지·폰트·번들은 Worker를 거치지 않고 정적 파일로 제공합니다.
 
 `npm run build`는 이미지 원본을 수정하지 않고 `dist/`의 배포 이미지만 WebP로 최적화하고 번들 URL을 갱신합니다. 그림책은 개발 중에는 원본 JPG, 배포 시에는 최적화한 WebP 펼침면을 사용합니다. `dist/`를 직접 편집하지 말고 소스를 수정한 뒤 다시 빌드하세요.
 

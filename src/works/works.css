@@ -511,15 +511,6 @@ body:has(.image-viewer[open]){overflow:hidden}
 .works-page{padding-top:var(--site-header-height)}
 .works-page [id]{scroll-margin-top:calc(var(--site-header-height) + 24px)}
 
-/* A quiet, shared path between the song, picture book and exhibition. */
-.dream-navigation{display:flex;justify-content:center;align-items:center;gap:20px;padding:22px 20px 12px;font-size:13px;line-height:1.7;letter-spacing:-.02em}
-.dream-navigation-step{display:flex;align-items:center;gap:20px}
-.dream-navigation-arrow{color:#bbb;font-size:12px;font-weight:400}
-.dream-navigation a{color:#92928b;padding:3px 0;border-bottom:1px solid transparent;transition:color .15s,border-color .15s}
-.dream-navigation a:hover{color:#292923;border-bottom-color:#b7b7ad}
-.dream-navigation a[aria-current=page]{color:#292923;font-weight:650;border-bottom-color:#292923}
-@media(max-width:650px){.dream-navigation,.dream-navigation-step{gap:16px}.dream-navigation{padding-top:18px;padding-bottom:4px;font-size:12px}}
-
 /* Match the reference's soft-paper turn, with one duration for the paper,
    book centering and cover gestures instead of competing 750/800/850ms clocks. */
 .picture-reader{--picture-turn-duration:1000ms}
@@ -548,3 +539,9 @@ body:has(.image-viewer[open]){overflow:hidden}
 .pf-book-toggle{pointer-events:none}
 .picture-flipbook{cursor:grab;touch-action:pan-y}
 .picture-reader[data-dragging] .picture-flipbook{cursor:grabbing}
+
+/* The engine's hard-cover shadow planes extend into the empty left half.
+   Keep the clipped shadows on soft, turning paper; remove only those planes. */
+.picture-flipbook :is(.stf__hardShadow,.stf__hardInnerShadow){display:none!important}
+/* Center the square artwork itself against the book cover, not its caption. */
+.exhibition-related-song{transform:translateY(calc(var(--related-book-height,197px) / 2 - var(--related-art-width) / 2))}

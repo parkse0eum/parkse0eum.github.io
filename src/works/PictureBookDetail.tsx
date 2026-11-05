@@ -1,4 +1,3 @@
-import DreamNavigation from './DreamNavigation'
 import { useEffect, useRef, useState } from 'react'
 import type { Work } from './data'
 import BookNavigation from './BookNavigation'
@@ -18,7 +17,6 @@ export default function PictureBookDetail({ work }: { work: Work }) {
       else navigate(archiveUrl())
     }}>← 모든 이야기</a></nav>
     <BookNavigation currentId={work.id} />
-    <DreamNavigation currentId={work.id} />
     <article>
       <div className="picture-book-heading">
         <div><p className="detail-page-category">문학 · 그림책</p><h1 ref={heading} tabIndex={-1}>{work.title}</h1></div>

@@ -10,7 +10,7 @@ async function walk(root) {
   return (await Promise.all(entries.map(entry => entry.isDirectory() ? walk(path.join(root, entry.name)) : path.join(root, entry.name)))).flat()
 }
 const files = await walk(directory)
-const images = files.filter(file => /\.(png|jpe?g)$/i.test(file))
+const images = files.filter(file => /\.(png|jpe?g)$/i.test(file) && !['favicon-96.png', 'apple-touch-icon.png'].includes(path.basename(file)))
 const replacements = new Map()
 let originalBytes = 0, optimizedBytes = 0
 for (let offset = 0; offset < images.length; offset += 3) {

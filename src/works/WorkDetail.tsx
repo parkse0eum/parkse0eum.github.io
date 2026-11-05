@@ -1,4 +1,3 @@
-import DreamNavigation from './DreamNavigation'
 import BookNavigation from './BookNavigation'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import type { MouseEvent } from 'react'
@@ -59,7 +58,6 @@ export default function WorkDetail({ work }: { work: Work }) {
     </nav>
     {album && <nav className="detail-album-nav" aria-label="개인 음악">{works.filter(item => item.category === '음악').map(item => <a key={item.id} href={archiveUrl(item.id)} aria-current={item.id === work.id ? 'page' : undefined} onClick={e => follow(e, archiveUrl(item.id))}>{item.title}</a>)}</nav>}
     {work.category === '문학' && <BookNavigation currentId={work.id} />}
-    <DreamNavigation currentId={work.id} />
     <article>
       <div className="detail-page-layout" ref={layout}>
         <div className={`detail-page-art${work.genre ? ' detail-page-art--book' : ''}`}>
