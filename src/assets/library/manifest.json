@@ -1,0 +1,122 @@
+[
+  {
+    "original": "당말꿈우1.jpeg",
+    "file": "src/assets/library/projects/dangmal-kkumwoo-01.jpeg",
+    "sha256": "64a7849a314e03097dca77638ed352aec1cef6391fc48012014ac6f3a9184a2a"
+  },
+  {
+    "original": "음페이지 배경.png",
+    "file": "src/assets/library/backgrounds/music.png",
+    "sha256": "6117ffbe50a37e5704e89faae95cad17ca6fce5c7d2588547d4f72550b234241"
+  },
+  {
+    "original": "밖.png",
+    "file": "src/assets/library/book/outside.png",
+    "sha256": "a19cd3d841ce533420663046b1506b11b69619302ac7c89480e1d8342fcf1adc"
+  },
+  {
+    "original": "서음집 배경.PNG",
+    "file": "src/assets/library/backgrounds/home.png",
+    "sha256": "a22c6aed839f93fe4d5141339f77335b16549845d1d15818578b03262fc6f6c6"
+  },
+  {
+    "original": "음.png",
+    "file": "src/assets/library/book/music.png",
+    "sha256": "d3a0e86265d78d7dba161be9bbbe9364f7f105e768e34b97779257fe22aa1fc4"
+  },
+  {
+    "original": "추가면.png",
+    "file": "src/assets/library/book/extra.png",
+    "sha256": "4acde7e6781c5c121c6ff14fe0fcf95108c68afebb576aa009d7d915b3436fca"
+  },
+  {
+    "original": "당말꿈우부산.JPG",
+    "file": "src/assets/library/projects/dangmal-kkumwoo-busan.jpg",
+    "sha256": "d5845691044cb9bae24f4ef054a760aa97e20e01a33917ec4ea89078e47d04d5"
+  },
+  {
+    "original": "서.png",
+    "file": "src/assets/library/book/writing.png",
+    "sha256": "ba6d8f092b7d0fccb5c2889ce30d18e7a32843adf9195c3bc4575fc9b929be26"
+  },
+  {
+    "original": "블루오어낫.png",
+    "file": "src/assets/library/projects/blue-or-not.png",
+    "sha256": "a7928fbc73a95cf335c3185e5ca1cea3de686fbff7fe6a9b87494ce5fa20e86f"
+  },
+  {
+    "original": "contact.png",
+    "file": "src/assets/library/book/contact.png",
+    "sha256": "ea23e4d2ac11ed23fa8224a850afb127667d4f0e2152ddf4c9773842e0fb2dde"
+  },
+  {
+    "original": "se0eum.zip.png",
+    "file": "src/assets/library/projects/se0eum-zip.png",
+    "sha256": "e4e93c5c11552b45678e7ab5ceb3c4f891cc7c43940b4ee2cf59429cbb5506ea"
+  },
+  {
+    "original": "당말꿈우2.JPG",
+    "file": "src/assets/library/projects/dangmal-kkumwoo-02.jpg",
+    "sha256": "578ac97c1b9ef7fe6363939b0163ad1e8fad064b2bfe51b8e05637f8f5faf0df"
+  },
+  {
+    "original": "네잠꿈나2인전포스터.JPG",
+    "file": "src/assets/library/projects/two-person-exhibition-poster.jpg",
+    "sha256": "97cee1fbb2827d68f220b3b5ececdc8249e65bf8aa305e2c14c4c9ff1517c359"
+  },
+  {
+    "original": "about.png",
+    "file": "src/assets/library/book/about.png",
+    "sha256": "fe63d7bf308b9fc42f845d4f5e75985a089751c075666350c8461991cf7ad9bf"
+  },
+  {
+    "original": "2.png",
+    "file": "src/assets/library/misc/image-02.png",
+    "sha256": "be88dccb955b1028c8da2937c8dd67bec0b4fcd68049a26f59337ce90b0fda93"
+  },
+  {
+    "original": "오글 아이콘.png",
+    "file": "src/assets/library/icons/ogle.png",
+    "sha256": "e3bcd61e9fe8ab9f6dc4c253352244a417b7f56c953b38c1bc5007f08df3db93"
+  },
+  {
+    "original": "1.png",
+    "file": "src/assets/library/misc/image-01.png",
+    "sha256": "7179d33c21dbcdfdb68b031873f8448bcc8798fa5a5e3d79b04cf6f539f4df8f"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 3.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-03.png",
+    "sha256": "ab4bf07855b6a8681c19e67ddfce45122f96490bbcaee566b961dbba239eabc8"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 2.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-02.png",
+    "sha256": "9d0b4fdc631fdbc2bcf8cf4e4c0c2d601b4b3023adbaab4d11c5e1569e9ff8a2"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 1.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-01.png",
+    "sha256": "0f1fe06e245fef511b8da2c39ca9ea3092d9537426b0c4eb213f68f3dd7788a9"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 5.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-05.png",
+    "sha256": "49151677c98502ffaa94bd863108978d1d3925e641bb20833a8d504437dad597"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 4.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-04.png",
+    "sha256": "4875d1b475ae39fedf6a505dc0065ff4b481b3cdc0775556397b54085e2a72a0"
+  },
+  {
+    "original": "부산인디북포트/배경 투명화 이미지 (1013 x 1350 px) - 6.PNG",
+    "file": "src/assets/library/projects/busan-indie-book-fair/artwork-06.png",
+    "sha256": "36c47f6f3bfac0cf5ed79271833b99274caef5cfddb580bced5cde1daf9a8618"
+  },
+  {
+    "original": "w0rks속지.png",
+    "file": "src/assets/library/book/works.png",
+    "sha256": "a213d4e4c981887bcfcc65fa875fb7322d04e5882b1f3472472b0487710001b8"
+  }
+]

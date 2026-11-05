@@ -1,4 +1,356 @@
-.welcome { max-width: 960px; margin: 0 auto; padding: clamp(80px, 18vh, 180px) 28px; }
-.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.18em; color: #58704c; }
-h1 { margin: 28px 0; font-size: clamp(40px, 7vw, 76px); line-height: 1.2; letter-spacing: -0.055em; }
-p { color: #62685f; font-size: 17px; line-height: 1.7; }
+/*
+  "The leporello carousel" from Animorio · https://animorio.com
+  License: free on your own sites and your clients’ sites, paid work included.
+  Not for resale, redistribution, templates or code collections · https://animorio.com/en/license/
+*/
+
+:root { --shade:#2e2820; }
+
+* { box-sizing: border-box; }
+
+html { touch-action: manipulation; }
+
+html, body { margin: 0;
+  overflow-x: clip; }
+
+body { min-height: 100svh;
+  -webkit-font-smoothing: antialiased; }
+
+.stage { min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  overflow: hidden; }
+
+.lep__view { position: relative;
+  height: calc(var(--card-h) + var(--pad) + var(--pad-low));
+  overflow: hidden;
+  outline: none;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  perspective: calc(var(--card-w) * 9);
+  perspective-origin: 50% -30%;
+
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); }
+
+.lep__view.is-held { cursor: grabbing; }
+
+.lep__strip { position: absolute;
+  left: 50%;
+  top: var(--pad);
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d; }
+
+.lep__shadow { position: absolute;
+  left: 50%;
+  top: calc(var(--pad) + var(--card-h) - 14px);
+  width: 100px;
+  height: 30px;
+  border-radius: 50%;
+  background:radial-gradient(closest-side,#302a2830,transparent);
+  transform-origin: 0 50%;
+  pointer-events: none;
+  will-change: transform; }
+
+.leaf { position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--card-w);
+  height: var(--card-h);
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+  will-change: transform; }
+
+.leaf__face { position: absolute;
+  inset: 0 -0.5px 0 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; }
+
+.leaf__face::before { content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--crease);
+  z-index: 2; }
+
+.leaf__face--back::before { left: auto;
+  right: 0.5px; }
+
+.leaf__shade { position: absolute;
+  inset: 0;
+  background: var(--shade);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none; }
+
+.book { position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+ }
+
+.sr { position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap; }
+
+@media (max-width:560px) {
+.lep__view { margin-left:-16px; margin-right:-16px; }
+}
+
+:root { --panel-base:280px; --card-w:calc(var(--panel-base) * .7); --cover-w:calc(var(--panel-base) / .82); --card-h:344px; --ink:#433b3e; --crease:#756a5c55; }
+
+html, body { min-height:100%;margin:0; }
+
+body { font-family:system-ui,-apple-system,'Apple SD Gothic Neo',sans-serif;background:#e6eff0 url("/images/book/background.jpg") center/cover fixed no-repeat;color:var(--ink); }
+
+.topbar { position:fixed;inset:0 0 auto;z-index:20;height:64px;display:flex;align-items:center;justify-content:space-between;padding:12px clamp(18px,3vw,36px);background:#fffdf4db;backdrop-filter:blur(8px); }
+
+.topbar strong { font-size:14px;letter-spacing:.01em; }
+
+.stage { position:relative;min-height:100svh;padding:90px 16px 110px;overflow:hidden; }
+
+.lep { width:min(1100px,100%);visibility:visible;pointer-events:none; }
+
+.is-open .lep { visibility:visible;pointer-events:auto; }
+
+.lep__view { --pad:55px;--pad-low:100px;--fade:28px;margin-top:18px; }
+
+.leaf__face { background:transparent;box-shadow:none;overflow:visible; }
+
+.leaf__face::before, .leaf__face::after { top:var(--roof-shoulder); }
+
+.paper-surface, .leaf__shade, .leaf__face--back { clip-path:polygon(50% 0,100% var(--roof-shoulder),100% 100%,0 100%,0 var(--roof-shoulder)); }
+
+.paper-surface { position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat; }
+
+.leaf__face--back { background:#f7f1e7; }
+
+.leaf__face--back .leaf__shade { clip-path:none; }
+
+.cover-board { position:absolute;width:var(--cover-w);height:116.27907%;left:50%;right:auto;top:-8.139535%;transform:translateX(-47.5%);background:#ecebe3;mask:url("/images/book/cover-mask.png") center/100% 100% no-repeat;-webkit-mask:url("/images/book/cover-mask.png") center/100% 100% no-repeat; }
+
+.book { inset:0;display:flex;align-items:flex-start;padding:0 16% 0 22%;top:42%;gap:12px; }
+
+.book__title { font-family:inherit;font-size:20px;line-height:1.45;font-weight:700;margin:0;background:#fffdf0cc;padding:4px 9px;letter-spacing:-.04em;white-space:nowrap; }
+
+.book__words { font-size:12px;line-height:1.65;color:var(--ink);background:#fffdf0b8;padding:4px 8px;margin:0;max-width:100%;font-weight:450; }
+
+.book__link { font-size:11px;line-height:1.6;color:var(--ink);background:#fffdf0e6;padding:6px 8px;margin-top:3px;touch-action:manipulation; }
+
+.cover-intro { position:absolute;inset:0;z-index:4;pointer-events:none; }
+
+.cover-hit { position:absolute;inset:0;width:100%;height:100%;border:0;background:none;padding:0;cursor:pointer;pointer-events:auto; }
+
+.is-open .cover-intro { visibility:hidden; }
+
+.is-transitioning .lep { pointer-events:none; }
+
+.leaf--first .leaf__face--back { clip-path:none;background:none; }
+
+.cover-art { position:absolute;width:var(--cover-w);height:116.27907%;left:50%;top:-8.139535%;transform:translateX(-47.5%);object-fit:fill;pointer-events:none; }
+
+
+button:focus-visible, a:focus-visible { outline:2px solid #4458aa;outline-offset:4px; }
+
+@media(max-width:600px) {
+:root { --panel-base:min(210px,calc((100vw - 64px) * .82));--card-h:calc(var(--panel-base) * 258 / 210); }
+
+.topbar { height:56px;padding:10px 18px; }
+
+.stage { padding:76px 16px 95px; }
+
+.lep__view { --pad:45px;--pad-low:90px;--fade:12px; }
+
+.book { padding-left:18%;padding-right:10%;gap:10px; }
+
+.book__title { font-size:16px;padding:3px 6px; }
+
+.book__words { font-size:10px;padding:3px 6px; }
+
+.book__link { font-size:10px;padding:5px 6px; }
+
+}
+
+@media(max-height:650px) and (min-width:601px) {
+:root { --panel-base:230px;--card-h:282px; }
+
+.stage { padding-top:75px;padding-bottom:65px; }
+
+.lep__view { --pad:36px;--pad-low:65px;margin-top:4px; }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+*, *::before, *::after { scroll-behavior:auto!important; }
+}
+
+.book { padding-left:14%;padding-right:10%; }
+
+.book__title { font-size:clamp(12px,calc(var(--card-w) * .075),18px);white-space:normal;word-break:keep-all;max-width:100%; }
+
+:root { --roof-shoulder:28.4459%; }
+
+.lep__boards { position:absolute;left:50%;top:var(--pad);width:0;height:0;transform-style:preserve-3d;z-index:0;pointer-events:none; }
+
+.lep__strip { z-index:1; }
+
+.cover-plane { pointer-events:none; }
+
+.leaf--first .leaf__face::before, .leaf--first .leaf__face::after, .leaf--last .leaf__face::before, .leaf--last .leaf__face::after { content:none; }
+
+.leaf__face--front { transform:translateZ(.3px); }
+
+.leaf__face--back { transform:rotateY(180deg) translateZ(.3px); }
+
+.leaf--first .leaf__face--back { transform:rotateY(180deg) translateZ(.8px); }
+
+.cover-hit { position:fixed;inset:auto;clip-path:polygon(50% 0,100% 28%,83% 42%,83% 100%,17% 100%,17% 42%,0 28%); }
+
+.cover-hit:focus-visible { outline:none;background:#fff8; }
+
+
+
+.accessible-close { position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);border:0;white-space:nowrap; }
+
+.accessible-close:focus-visible { position:fixed;top:14px;right:18px;width:auto;height:auto;clip-path:none;padding:10px 16px;background:#fffdf4;color:var(--ink);border:1px solid var(--ink);border-radius:24px;z-index:30; }
+
+@media(max-width:600px) {
+}
+
+.lep__view { cursor:default; }
+
+.lep__strip > .leaf, .leaf__face--front, .book { pointer-events:none; }
+
+.paper-surface, .leaf__face--back, .book > * { pointer-events:auto;cursor:grab; }
+
+.leaf--first .leaf__face--back { pointer-events:none; }
+
+.book__link { cursor:pointer; }
+
+.lep__view.is-held, .lep__view.is-held .paper-surface, .lep__view.is-held .leaf__face--back, .lep__view.is-held .book > * { cursor:grabbing; }
+
+body:not(.is-open) .lep *, body.is-transitioning .lep * { pointer-events:none; }
+
+/* One untouched works image, scaled uniformly. Its pencil curve at the
+   crop edges is at source y=763.5/3000; align it to both roof shoulders. */
+.leaf[data-page="extra"] .paper-surface {
+  background-size: auto 150%;
+  background-position: center calc(var(--card-h) * -.097291);
+}
+
+
+
+/* Airy titles and loose, fixed collage compositions inside the paper body. */
+@font-face {
+  font-family: 'Pretendard';
+  src: local('Pretendard Medium'), url('/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+body { font-family: 'Pretendard', sans-serif; font-weight: 500; }
+.topbar strong { font-weight: 500; letter-spacing: -.05em; }
+.book {
+  visibility: visible;
+  top: 34%; bottom: 6%; left: 8%; right: 8%;
+  padding: 0; gap: 0; display: flex; flex-direction: column;
+  align-items: stretch; overflow: visible; color: #433b3e;
+}
+.book__title {
+  margin: 0; padding: 0; background: none; max-width: 100%;
+  font-family: 'Pretendard', sans-serif;
+  font-size: calc(var(--card-w) * .105); line-height: 1.2;
+  font-weight: 500; letter-spacing: -.065em;
+}
+.book__icons { position: relative; flex: 1; min-height: 0; margin-top: 7%; }
+.book__icon {
+  position: absolute; width: 70%; height: calc(var(--card-h) * .26);
+  margin: 0; min-width: 0; pointer-events: none;
+}
+.book__icon-art { display: block; width: 100%; height: 100%; text-decoration: none; color: inherit; }
+.book__icon-image {
+  display: block; width: 100%; height: 100%;
+  filter: drop-shadow(1px 4px 3px #30282545);
+}
+.book__icon a { pointer-events: auto; cursor: pointer; }
+/* Page-specific placements leave clear space between actual artwork bounds. */
+[data-page="outside"] .book__icon:nth-child(1) {
+  width: 47%; height: 24%; left: 0; bottom: 3%;
+}
+[data-page="outside"] .book__icon:nth-child(2) {
+  width: 64%; height: 60%; right: 0; top: 0;
+}
+
+/* Two upright books share a centerline, with a 12% horizontal gutter. */
+[data-page="writing"] .book__icons {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12%; align-items: center;
+}
+[data-page="writing"] .book__icon {
+  position: relative; width: 100%; height: 65%;
+}
+
+/* Account for the rotated CD's full diagonal footprint, not just its box. */
+[data-page="music"] .book__icon:nth-child(1) {
+  width: 40%; height: auto; aspect-ratio: 1;
+  left: 10%; top: 9%; transform: rotate(-45deg);
+}
+[data-page="music"] .book__icon:nth-child(2) {
+  width: 46%; height: 40%; right: 0; bottom: 0;
+}
+
+@font-face{font-family:'Neujoh';src:url('/fonts/Neujoh-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Neujoh';src:url('/fonts/Neujoh-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+.home-page,.home-page button,.home-page .book__title{font-family:'Neujoh',sans-serif}
+.home-brand{display:block;width:70px;height:70px;object-fit:contain}
+.home-page-copy{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:18%;font-size:calc(var(--card-w)*.065);line-height:1.5}
+.home-author-name{font-size:calc(var(--card-w)*.09);margin:0 0 12px}
+.home-page-copy a{color:inherit;text-decoration:none;pointer-events:auto;cursor:pointer}
+.home-page-copy a:hover{text-decoration:underline;text-underline-offset:5px}
+.home-bottom-nav{position:absolute;top:calc(100svh - 86px);left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:16px;white-space:nowrap;font-size:16px;line-height:1.7;color:var(--ink)}
+.home-bottom-nav button,.home-bottom-nav a{border:0;padding:7px 0;background:none;color:inherit;font:inherit;text-decoration:none;cursor:pointer}
+.home-bottom-nav button:hover,.home-bottom-nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.home-bottom-nav>span{color:#433b3e66}
+.home-page [data-page="writing"] .book__icons{align-items:center;gap:12%}
+.home-page [data-page="writing"] .book__icon{height:auto;aspect-ratio:788/1100}
+.home-page [data-page="writing"] .book__icon:first-child{aspect-ratio:788/1155}
+.home-page [data-page="music"] .book__icon:first-child{transform:none}
+@media(max-width:600px){.home-brand{width:60px;height:60px}.home-bottom-nav{font-size:15px;gap:12px}}
+
+/* The home keeps its handwritten rhythm, with quiet English labels. */
+.home-page .topbar{justify-content:flex-start;gap:0;padding:0 12px}
+.home-page .home-brand{width:56px;height:56px;margin-left:-8px}
+.home-brand-name{font-family:'Pretendard',sans-serif;font-size:14px;font-weight:400;letter-spacing:-.025em;margin-left:-2px}
+.home-page .book__title--english{font-family:'Pretendard',sans-serif;font-weight:400;font-size:calc(var(--card-w)*.088);letter-spacing:-.03em}
+.home-author-name{white-space:nowrap;margin-bottom:0}
+.home-author-latin{font-family:'Pretendard',sans-serif;font-size:.67em;font-weight:400}
+.home-greeting{margin:0 0 15px;font-size:calc(var(--card-w)*.075)}
+.home-page .home-story-link{font-size:calc(var(--card-w)*.085);line-height:1.7}
+.home-page [data-page="music"] .book__icon:first-child{width:46%;left:8%;top:8%}
+.home-page [data-page="music"] .book__icon:nth-child(2){width:52%;height:45%}
+@font-face{font-family:'Home Pretendard';src:url('/fonts/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+.home-page .book__title--english,.home-page .home-brand-name,.home-page .home-author-latin{font-family:'Home Pretendard','Pretendard',sans-serif;font-weight:400}
+.home-social-icon{display:block;width:25px;height:25px;flex:none}
+.home-page [data-page="about"] .home-page-copy>a{display:flex;align-items:center;justify-content:center;width:32px;height:32px}
+.home-page [data-page="about"] .home-page-copy>a:hover{opacity:.65}
+
+/* Keep the greeting in the middle and give social marks a dedicated bottom row. */
+.home-page .home-about-copy{flex:1;min-height:0;width:100%;gap:0;margin-top:0}
+.home-about-intro{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:8px;padding:6px 0;width:100%}
+.home-about-intro .home-author-name{font-size:calc(var(--card-w)*.11);line-height:1.35;margin:0}
+.home-about-intro .home-author-latin{font-size:.58em}
+.home-about-intro .home-greeting{font-size:calc(var(--card-w)*.092);line-height:1.5;margin:0;word-break:keep-all}
+.home-social-links{display:flex;align-items:center;gap:12px;flex-shrink:0;padding:6px 0 2px}
+.home-social-links a{display:flex;align-items:center;justify-content:center;flex:none;width:26px;height:26px}
+.home-social-links .home-social-icon{width:18px;height:18px;overflow:visible}
+.home-social-links a:hover{opacity:.65}
+.home-page [data-page="contact"] .home-page-copy a{font-family:'Home Pretendard','Pretendard',sans-serif;font-weight:400}
+.home-page .home-about-intro .home-greeting{font-family:'Home Pretendard','Pretendard',sans-serif;font-size:calc(var(--card-w)*.07);font-weight:400;line-height:1.7}

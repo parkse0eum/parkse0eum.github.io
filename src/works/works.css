@@ -1,0 +1,510 @@
+.archive-entry{position:absolute;top:calc(100svh - 86px);left:50%;transform:translateX(-50%);z-index:10;border:0;border-bottom:1px solid #433b3e66;background:none;color:var(--ink);padding:12px 0;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}.archive-entry span{margin-left:28px}
+body:has(.works-archive[open]){overflow:hidden}
+.works-archive{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;padding:0;background:white;color:#171717;overscroll-behavior:contain;font-family:'Pretendard',sans-serif}.works-archive::backdrop{background:white}
+.archive-header{display:flex;justify-content:space-between;align-items:center;padding:17px 2.4%;font-size:11px;color:#777}.archive-header>div{display:flex;gap:24px}.archive-header a{color:inherit;text-decoration:none}.archive-header button,.archive-reset,.archive-empty button,.detail-close{font:inherit;background:none;border:0;cursor:pointer;color:inherit}.archive-content{padding:0 2.4% 24px}
+.archive-filterbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;align-items:center;gap:4vw;padding:17px 0 30px;position:relative}.archive-filterbar:after{content:'';position:absolute;bottom:0;left:-2.6%;right:-2.6%;border-bottom:1px solid #d9d9d9}.archive-dropdown{position:relative;display:flex;align-items:center;gap:18px;min-width:0;border-bottom:1px solid #171717;padding:10px 0 14px}.archive-dropdown>span{font-size:16px;font-weight:700;white-space:nowrap}.archive-dropdown select{flex:1;width:0;min-width:0;border:0;border-radius:0;appearance:none;background:none;color:#777;font:inherit;font-size:14px;padding:0 25px 0 0;cursor:pointer;line-height:1.6}.archive-dropdown:after{content:'';position:absolute;right:6px;top:16px;width:9px;height:9px;border-right:1.5px solid #111;border-bottom:1.5px solid #111;transform:rotate(45deg);pointer-events:none}.archive-reset{border-bottom:1px solid #777;padding:10px 0 14px;color:#666;font-size:13px;white-space:nowrap}
+.archive-tools{display:flex;justify-content:space-between;align-items:center;height:46px;color:#999}.archive-count{font-size:10px;margin:0}.archive-search{width:150px}.archive-search input{width:100%;font:inherit;font-size:11px;border:0;border-bottom:1px solid #eee;padding:5px 0;background:none;color:#333;border-radius:0}
+.archive-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:55px 2.2vw;align-items:start;padding-top:10px}.work-card{position:relative;text-align:left;border:0;padding:0;background:none;color:inherit;font:inherit;cursor:pointer;min-width:0}.work-art{position:relative;height:clamp(230px,25vw,510px);display:flex;align-items:flex-start;justify-content:center;background:white}.work-art img{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:top}.work-type-cover{width:100%;min-height:180px;display:flex;flex-direction:column;gap:25px;padding:20px 10px;border-top:1px solid #ddd;color:#555}.work-type-cover small{font-size:9px;color:#aaa}.work-type-cover>span{font-size:15px;line-height:1.9;word-break:keep-all}.work-open{display:none}.work-meta{display:flex;justify-content:space-between;font-size:10px;color:#999;margin:13px 0 8px}.work-card h2{font-size:12px;font-weight:500;line-height:1.7;margin:0;word-break:keep-all}.work-roles{font-size:10px;color:#888}.work-card:has(img) .work-meta,.work-card:has(img) h2,.work-card:has(img) .work-roles{opacity:0;transition:opacity .15s}.work-card:hover .work-meta,.work-card:hover h2,.work-card:hover .work-roles,.work-card:focus-visible .work-meta,.work-card:focus-visible h2,.work-card:focus-visible .work-roles{opacity:1}
+.archive-empty{padding:100px 0;text-align:center;color:#888;font-size:13px}.archive-empty button{font-size:12px;text-decoration:underline;margin-top:14px}.archive-footer{display:flex;justify-content:space-between;margin-top:80px;padding:24px 0 6px;font-size:10px;color:#aaa}
+.work-detail{width:min(760px,calc(100% - 32px));max-height:90svh;border:0;padding:35px;color:#252525;background:white;overscroll-behavior:contain}.work-detail::backdrop{background:#0005;backdrop-filter:blur(3px)}.detail-close{display:block;margin-left:auto;padding:8px 0;font-size:13px}.detail-category{margin-top:35px;font-size:12px;color:#777}.work-detail h2{font-size:28px;line-height:1.5;font-weight:500;word-break:keep-all}.detail-image{display:block;max-width:100%;height:auto;margin:25px auto}.detail-description{white-space:pre-wrap;line-height:1.9}.detail-pending{font-size:13px;color:#888;margin:50px 0}
+.works-archive :is(button,a,input,select):focus-visible{outline:2px solid #4458aa;outline-offset:5px}
+@media(max-width:1000px){.archive-filterbar{gap:25px}.archive-dropdown{gap:12px}.archive-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.work-art{height:30vw}}
+@media(max-width:650px){.archive-header{padding:18px 5%}.archive-content{padding:0 5% 20px}.archive-filterbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;padding-bottom:22px}.archive-filterbar:after{left:-5.6%;right:-5.6%}.archive-reset{grid-column:2;justify-self:end;font-size:11px;padding:5px 0}.archive-dropdown>span{font-size:14px}.archive-dropdown select{font-size:12px}.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 22px}.work-art{height:55vw}.work-type-cover{min-height:140px;padding:15px 5px}.work-type-cover>span{font-size:14px}.work-card:has(img) .work-meta,.work-card:has(img) h2,.work-card:has(img) .work-roles{opacity:1}.work-detail{padding:24px}.work-detail h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.work-card *{transition:none!important}}
+
+/* Keep each artwork's own proportions. Only the horizontal gutter is shared. */
+.archive-grid{gap:45px 24px}
+.work-art{height:auto;display:block}
+.work-art img{width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain}
+.work-card:has(img) .work-meta,.work-card:has(img) h2,.work-card:has(img) .work-roles{opacity:1}
+@media(max-width:650px){.archive-grid{gap:32px 20px}.work-art{height:auto}}
+
+/* The archive shows covers only; titles and credits live in the detail view. */
+.work-card--book .work-art{width:88%;margin-inline:auto}
+.work-type-cover{border:0;background:#f8f8f5;min-height:210px;padding:24px 18px}
+.work-type-cover small{display:none}
+.detail-contents{margin:35px 0;border-top:1px solid #ddd;padding-top:20px}
+.detail-contents h3{font-size:12px;font-weight:500;color:#888}
+.detail-contents ol{padding-left:25px}
+.detail-contents li{padding:13px 0 13px 8px;line-height:1.7;font-size:14px}
+.detail-contents small{font-size:11px;color:#999;margin-left:16px}
+.archive-filterbar{grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:5vw}
+@media(max-width:650px){.archive-filterbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}.archive-reset{grid-column:auto}}
+.work-art img[src$="mongledum-001.png"],.detail-image[src$="mongledum-001.png"]{background:#4f5955}
+
+/* Equal book widths; Ogle is five percent taller than Blue or Not. */
+.work-card--book .work-art:has(img[src$="to-book-corrected.png"]){aspect-ratio:788 / 1155}
+.work-art img[src$="to-book-corrected.png"]{height:100%;object-fit:fill}
+
+/* Detail routes occupy the page, with no floating layer or backdrop. */
+body:has(.works-page){background:#fff;color:#171717;overflow:auto}
+.works-page{min-height:100svh;background:#fff;color:#171717;font-family:'Pretendard',sans-serif}
+.works-page a{color:inherit;text-decoration:none}
+.archive-entry{text-decoration:none}
+.work-card{display:block}
+.works-page :is(a,button,input,select):focus-visible{outline:2px solid #4458aa;outline-offset:5px}
+.detail-page-header{display:flex;justify-content:space-between;align-items:center;padding:24px 3%;font-size:12px;color:#666}
+.detail-album-nav{display:flex;justify-content:center;gap:45px;padding:24px 3% 32px;border-bottom:1px solid #e7e7e7;font-size:14px;color:#999}
+.detail-album-nav a[aria-current=page]{color:#111}
+.detail-page-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7%;max-width:1600px;margin:auto;padding:80px 5% 100px;align-items:start}
+.detail-page-art{position:sticky;top:40px;display:flex;justify-content:center;align-items:flex-start}
+.detail-page-art img{display:block;width:100%;height:auto;max-height:80svh;object-fit:contain}
+.detail-page-art--book img{width:82%}
+.detail-page-info{min-width:0;padding-top:12px}
+.detail-page-category{font-size:14px;margin:0 0 25px}
+.detail-page-info h1{font-size:clamp(28px,3.1vw,52px);font-weight:500;letter-spacing:-.055em;line-height:1.25;margin:0 0 28px;word-break:keep-all;outline:none}
+.detail-page-artist{font-size:17px;margin:0 0 24px}
+.detail-page-meta{font-size:13px;color:#777;line-height:1.9;margin:8px 0}
+.detail-section-nav{display:flex;gap:26px;margin-top:50px;padding-bottom:18px;border-bottom:1px solid #ccc;font-size:13px}
+.detail-section-nav a:first-child{border-bottom:1px solid #171717;padding-bottom:5px}
+.music-service-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:20px;border-top:1px solid #d5d5d5;border-left:1px solid #d5d5d5}
+.music-service-links a{display:flex;align-items:center;gap:13px;padding:20px 18px;border-right:1px solid #d5d5d5;border-bottom:1px solid #d5d5d5;font-size:13px;color:#525d63}
+.music-service-links a>span:last-child{margin-left:auto}
+.music-service-links a:hover{background:#f8f8f6}
+.music-service-icon{width:17px;text-align:center;font-size:17px}
+.detail-text-section{margin-top:52px;padding-top:26px;border-top:1px solid #222;scroll-margin-top:25px}
+.detail-text-section h2{font-size:13px;font-weight:500;margin:0 0 25px}
+.detail-text{font-size:15px;font-weight:500;line-height:2.05;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;margin:0}
+.detail-credits{margin:0;font-size:12px;line-height:1.9}
+.detail-credits>div{display:grid;grid-template-columns:minmax(130px,.9fr) minmax(0,1.1fr);gap:15px;padding:5px 0}
+.detail-credits dt{color:#777}.detail-credits dd{margin:0;word-break:keep-all}
+.detail-entry-list{padding:0;list-style:none;margin:0;counter-reset:entry}
+.detail-entry-list li{display:flex;gap:15px;padding:16px 0;border-bottom:1px solid #eee;font-size:14px;counter-increment:entry}
+.detail-entry-list li:before{content:counter(entry,decimal-leading-zero);color:#aaa;font-size:10px;padding-top:3px}
+.detail-entry-list small{margin-left:auto;font-size:11px;color:#888;white-space:nowrap}
+.detail-source{display:inline-block;margin-top:36px;font-size:11px;color:#888!important}
+.detail-page-gallery{display:grid;gap:40px;max-width:900px;margin:0 auto;padding:0 5% 60px}
+.detail-page-gallery img{display:block;width:100%;height:auto}
+.detail-page-footer{padding:28px 5%;border-top:1px solid #ddd;font-size:12px}
+.detail-page-art img[src$="mongledum-001.png"]{background:#4f5955}
+@media(max-width:750px){.detail-page-header{padding:22px 6%}.detail-album-nav{gap:22px;padding:14px 6% 24px;font-size:12px;justify-content:flex-start;overflow:auto}.detail-album-nav a{white-space:nowrap}.detail-page-layout{grid-template-columns:1fr;gap:42px;padding:35px 6% 65px}.detail-page-art{position:static;max-width:460px;width:100%;margin:auto}.detail-page-art img{max-height:65svh}.detail-page-info{padding:0}.detail-page-info h1{font-size:32px}.detail-page-category{margin-bottom:16px;font-size:12px}.detail-text{font-size:14px}.detail-section-nav{margin-top:35px}.detail-credits>div{grid-template-columns:1fr 1.2fr;gap:12px}.music-service-links a{padding:18px 13px}.detail-text-section{margin-top:38px}}
+
+/* Cover, title, and listening links form one header above a full-width rule. */
+.detail-page-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr);gap:6%;max-width:1800px;padding:65px 5% 85px;min-height:520px}
+.detail-page-art{position:static}
+.detail-page-art img{max-height:600px}
+.detail-page-info{padding-top:0}
+.detail-page-category{font-size:15px;margin-bottom:35px}
+.detail-page-info h1{font-size:clamp(30px,3vw,52px);line-height:1.35;letter-spacing:-.035em;font-weight:500;margin-bottom:32px}
+.detail-page-artist{font-size:16px;margin-bottom:30px}
+.detail-page-meta{font-size:14px;line-height:1.85;color:#333;letter-spacing:-.015em}
+.detail-section-nav{border:0;gap:22px;font-size:12px;margin-top:40px}
+.detail-section-nav a:first-child{border:0;padding:0}
+.detail-page-actions{min-width:0;padding-top:8px}
+.music-service-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 20px;border:0;margin:0}
+.music-service-links a{border:0;padding:8px 0;font-size:14px;color:#111;gap:6px;line-height:1.6}
+.music-service-links a>span:last-child{margin:0}
+.music-service-links a:hover{background:none;text-decoration:underline;text-underline-offset:4px}
+.detail-page-body{margin:0 2%;border-top:1px solid #111;padding:65px 0 100px}
+.detail-reading-column{width:min(58%,840px);margin-left:32%;padding-right:2%}
+.detail-text-section{border:0;margin:0 0 75px;padding:0;scroll-margin-top:35px}
+.detail-text-section:last-child{margin-bottom:0}
+.detail-text-section h2{font-family:'Pretendard',sans-serif;font-size:14px;line-height:1.6;font-weight:500;letter-spacing:-.01em;margin-bottom:28px}
+.detail-text{font-family:'AppleMyungjo','Noto Serif KR','Batang',serif;font-size:clamp(17px,1.3vw,21px);font-weight:400;line-height:1.95;letter-spacing:-.025em;word-break:keep-all;overflow-wrap:break-word}
+.detail-credits{font-family:'Pretendard',sans-serif;font-size:14px;line-height:1.9;letter-spacing:-.01em}
+.detail-credits>div{grid-template-columns:minmax(160px,.9fr) minmax(0,1.4fr);padding:7px 0}
+@media(max-width:1100px){.detail-page-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px 7%;min-height:0}.detail-page-art{grid-row:span 2}.detail-page-actions{grid-column:2}.detail-page-info h1{font-size:34px}.detail-section-nav{margin-top:25px;padding:0}.detail-reading-column{width:70%;margin-left:20%}}
+@media(max-width:650px){.detail-page-layout{grid-template-columns:1fr;gap:32px;padding:30px 6% 45px}.detail-page-art{grid-row:auto;max-width:420px}.detail-page-art img{max-height:65svh}.detail-page-actions{grid-column:auto;padding:0}.detail-page-category{font-size:13px;margin-bottom:18px}.detail-page-info h1{font-size:30px;margin-bottom:22px}.detail-page-artist{margin-bottom:20px}.detail-page-meta{font-size:13px}.music-service-links{gap:3px 25px}.music-service-links a{font-size:14px;padding:7px 0}.detail-page-body{margin:0 5%;padding:38px 1% 65px}.detail-reading-column{width:100%;margin:0;padding:0}.detail-text{font-size:17px;line-height:1.95;letter-spacing:-.02em}.detail-text-section{margin-bottom:50px}.detail-credits{font-size:12px}.detail-credits>div{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px}}
+
+@font-face{font-family:'Nanum Myeongjo';src:url('/fonts/NanumMyeongjo-Regular.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+/* Listening links keep their icons without frames or arrow decoration. */
+.music-service-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 20px;border:0}
+.music-service-links a{min-width:0;min-height:44px;gap:9px;padding:10px 0;border:0;color:#525d63;font-size:13px;line-height:1.5}
+.music-service-links a>span:last-child{margin:0;overflow-wrap:break-word}
+.music-service-links a:hover{background:none;text-decoration:underline;text-underline-offset:4px}
+.music-service-links .music-service-icon{display:block;flex:0 0 20px;width:20px;height:20px}
+.detail-reading-column{width:min(100%,500px);margin-inline:auto;padding:0}
+.detail-text{font-family:'Nanum Myeongjo','AppleMyungjo','Batang',serif;font-size:17px;font-weight:400;line-height:1.95;letter-spacing:-.01em;-webkit-text-stroke:.12px currentColor}
+.detail-text-section h2{font-size:18px;font-weight:650;line-height:1.6;letter-spacing:-.015em;margin-bottom:26px}
+@media(max-width:1100px){.detail-reading-column{width:min(100%,500px);margin-inline:auto}.music-service-links a{padding:10px 0}}
+@media(max-width:650px){.music-service-links a{min-height:44px;padding:10px 0;font-size:13px}.detail-reading-column{width:100%;margin:0}.detail-text{font-size:16px;line-height:1.95;letter-spacing:-.01em}.detail-text-section h2{font-size:18px}}
+
+/* Listening links begin beneath the album metadata; soft yellow section pills. */
+.detail-page-actions{padding-top:260px}
+.detail-section-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;padding:0}
+.detail-section-nav a,.detail-section-nav a:first-child{display:inline-flex;align-items:center;justify-content:center;flex:0 0 84px;width:84px;height:30px;padding:0;border:0;border-radius:50%;background:#fff8b5;color:#433b31;font-size:13px;font-weight:500;line-height:1;text-decoration:none;transition:background-color .15s,transform .15s}
+.detail-section-nav a:hover{background:#fff09a;transform:translateY(-2px)}
+.detail-section-nav a:active{transform:translateY(0)}
+@media(max-width:1100px){.detail-page-actions{padding-top:0}}
+@media(max-width:650px){.detail-section-nav{gap:9px;margin-top:25px}.detail-section-nav a,.detail-section-nav a:first-child{flex-basis:80px;width:80px;height:29px;font-size:12px}.detail-page-actions{padding-top:0}}
+@media(prefers-reduced-motion:reduce){.detail-section-nav a{transition:none}.detail-section-nav a:hover{transform:none}}
+
+/* Keep the previous layout; only change the section buttons to highlights. */
+.detail-section-nav a,.detail-section-nav a:first-child{border-radius:0;background:linear-gradient(transparent 15%,#fff8b5 15%,#fff8b5 90%,transparent 90%)}
+.detail-section-nav a:hover{background:linear-gradient(transparent 15%,#fff09a 15%,#fff09a 90%,transparent 90%);transform:none}
+
+/* Compact title rhythm; align to the real cover and date without stretching text rows. */
+.work-page--music .detail-page-info{display:flex;flex-direction:column;padding-top:0}
+.work-page--music .detail-page-category{margin:0 0 18px}
+.work-page--music .detail-page-info h1{margin:0 0 10px}
+.work-page--music .detail-page-artist{margin:0 0 22px}
+.work-page--music .detail-section-nav{margin-top:auto;padding-top:24px}
+.music-service-links{row-gap:2px}
+.music-service-links a{min-height:32px;padding:5px 0}
+@media(min-width:1101px){.work-page--music .detail-page-info{min-height:var(--album-cover-height,0px)}.work-page--music .detail-page-actions{padding-top:var(--music-links-offset,0px)}}
+@media(max-width:1100px){.work-page--music .detail-section-nav{margin-top:24px;padding-top:0}.work-page--music .detail-page-actions{padding-top:0}.music-service-links a{padding:5px 0}}
+@media(max-width:650px){.work-page--music .detail-page-category{margin-bottom:16px}.work-page--music .detail-page-info h1{margin-bottom:9px}.music-service-links a{min-height:34px;padding:5px 0}}
+
+/* Keep the divider close to the bottom of the music header. */
+.work-page--music .detail-page-layout{padding-bottom:24px}
+
+/* Match the space above and below the music divider. */
+.work-page--music .detail-page-layout{padding-bottom:65px}
+@media(max-width:650px){.work-page--music .detail-page-layout{padding-bottom:38px}}
+
+/* Literature has an independent header so edits cannot change the music layout. */
+.literature-page .detail-page-layout{padding-top:65px;padding-bottom:65px;min-height:0}
+.literature-page .detail-page-info{display:block;padding-top:0}
+.literature-page .detail-page-category{margin-bottom:20px}
+.literature-page .detail-page-info h1{margin-bottom:28px}
+.book-authors{font-size:14px;line-height:1.95;letter-spacing:-.01em;word-break:keep-all;margin:0 0 20px}
+.literature-page .book-links{padding-top:0;font-size:14px;line-height:1.9}
+.book-links a{display:inline-block;padding:8px 0}
+.book-links a:hover{text-decoration:underline;text-underline-offset:4px}
+.book-contents h2{font-family:'Pretendard',sans-serif;font-size:20px;font-weight:650;margin:0 0 34px;letter-spacing:-.025em}
+.book-entry{border-bottom:1px solid #e5e5e5}
+.book-entry summary{display:grid;grid-template-columns:25px minmax(0,1fr) auto;gap:12px;align-items:baseline;list-style:none;padding:22px 0;cursor:pointer}
+.book-entry summary::-webkit-details-marker{display:none}
+.book-entry-number{font-size:11px;color:#aaa}
+.book-entry-title{font-size:16px;line-height:1.65;word-break:keep-all}
+.book-entry-genre{font-size:12px;color:#888;white-space:nowrap}
+.book-entry summary:hover .book-entry-title{text-decoration:underline;text-underline-offset:5px}
+.book-entry summary:focus-visible{outline:2px solid #4458aa;outline-offset:3px}
+.book-entry[open] summary{padding-bottom:25px}
+.book-entry-body{padding:0 0 35px}
+@media(max-width:1100px){.literature-page .detail-page-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.literature-page .book-links{grid-column:2;padding-top:0}}
+@media(max-width:650px){.literature-page .detail-page-layout{grid-template-columns:1fr;padding:30px 6% 38px;gap:28px}.literature-page .detail-page-art{grid-row:auto}.literature-page .book-links{grid-column:auto}.book-authors{font-size:13px}.book-contents h2{font-size:19px;margin-bottom:22px}.book-entry summary{gap:9px;padding:20px 0}.book-entry-title{font-size:15px}}
+
+/* Distribute only the service rows between the date and the button baseline. */
+@media(min-width:1101px){
+.work-page--music .music-service-links{height:var(--music-links-height,auto);align-content:space-between;grid-auto-rows:max-content;row-gap:0}
+.work-page--music .music-service-links a{min-height:20px;padding:0}
+}
+
+/* Book information, contents navigation, and continuous original texts. */
+.literature-page .detail-page-info{display:flex;flex-direction:column}
+.literature-page .book-links{margin-top:auto;padding-top:28px}
+.literature-page .book-links a{padding:0;line-height:1.5}
+.literature-page .book-contents{min-width:0;padding-top:0}
+.literature-page .book-entry-list{list-style:none;padding:0;margin:0}
+.literature-page .book-entry-list a{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:22px 0;border-bottom:1px solid #e5e5e5}
+.literature-page .book-entry-list a:hover .book-entry-title{text-decoration:underline;text-underline-offset:5px}
+.literary-work{scroll-margin-top:40px}
+.literary-work+.literary-work{border-top:1px solid #111;margin-top:90px;padding-top:90px}
+.literary-work h2{font-family:'Pretendard',sans-serif;font-size:22px;font-weight:700;line-height:1.6;margin:0 0 48px;word-break:keep-all}
+.literature-page .detail-reading-column{width:min(100%,500px)}
+.literary-text{font-family:'Nanum Myeongjo',serif;font-size:17px;line-height:2;letter-spacing:-.01em;word-break:keep-all;overflow-wrap:break-word}
+.literary-text p,.literary-text h3{font-size:1em;line-height:inherit;margin:0;white-space:pre-wrap}
+.literary-text .literary-centered{text-align:center}
+.literary-original{display:block;margin:40px 0}
+.literary-original img{display:block;width:100%;height:auto}
+@media(min-width:1101px){.literature-page .detail-page-info{min-height:var(--book-cover-height,0px)}}
+@media(max-width:1100px){.literature-page .book-contents{grid-column:2}.literature-page .detail-page-info{align-self:stretch}.literature-page .book-links{margin-top:24px}}
+@media(max-width:650px){.literature-page .book-contents{grid-column:auto}.literature-page .book-links{margin-top:20px;padding-top:0}.literature-page .detail-reading-column{width:100%}.literary-work+.literary-work{margin-top:65px;padding-top:65px}.literary-text{font-size:16px}.literary-work h2{font-size:20px;margin-bottom:36px}}
+
+.literature-page .book-author-highlight{color:inherit;background:linear-gradient(transparent 15%,#fff8b5 15%,#fff8b5 90%,transparent 90%);padding:0 2px}
+@media(min-width:1101px){
+.literature-page .book-contents{box-sizing:border-box;margin-top:var(--book-contents-offset,0px);min-height:180px;height:calc(var(--book-cover-height,0px) - var(--book-contents-offset,0px));display:flex;flex-direction:column}
+.literature-page .book-contents h2{margin:0 0 24px}
+.literature-page .book-entry-list{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.literature-page .book-entry-list a{padding:0 0 14px}
+.literature-page .book-entry-list li:last-child a{padding-bottom:0;border-bottom:0}
+}
+
+/* Compact book contents, starting at the publisher and ending at the cover. */
+.literature-page .book-contents h2{font-size:16px;line-height:1.4;margin-bottom:18px}
+.literature-page .book-entry-title{font-size:14px;line-height:1.4}
+.literature-page .book-entry-number{font-size:10px;line-height:1.4}
+.literature-page .book-entry-genre{font-size:11px;line-height:1.4}
+.literature-page .book-entry-list a{gap:9px;padding-top:12px;padding-bottom:12px}
+@media(min-width:1101px){
+.literature-page .book-contents{min-height:0}
+.literature-page .book-entry-list a{padding-top:0;padding-bottom:10px}
+.literature-page .book-entry-list li:last-child a{padding-bottom:0}
+}
+
+/* Put contents rules midway between entries, with more room below the heading. */
+.literature-page .book-contents h2{margin-bottom:30px}
+.literature-page .book-entry-list li{position:relative}
+.literature-page .book-entry-list a{border-bottom:0}
+.literature-page .book-entry-list li+li{border-top:1px solid #e5e5e5}
+@media(min-width:1101px){
+.literature-page .book-entry-list{display:grid;grid-template-rows:repeat(3,minmax(0,1fr))}
+.literature-page .book-entry-list li{display:flex;align-items:center}
+.literature-page .book-entry-list li:first-child{align-items:flex-start}
+.literature-page .book-entry-list li:last-child{align-items:flex-end}
+.literature-page .book-entry-list li+li{border-top:0}
+.literature-page .book-entry-list li+li::before{content:'';position:absolute;left:0;right:0;top:0;border-top:1px solid #e5e5e5}
+.literature-page .book-entry-list a{width:100%;padding:0}
+}
+@media(min-width:1101px){
+.literature-page .book-entry-list{grid-template-rows:auto minmax(16px,1fr) auto minmax(16px,1fr) auto}
+.literature-page .book-entry-list li{display:contents}
+.literature-page .book-entry-list li+li::before{content:none}
+.literature-page .book-entry-list li:not(:last-child)::after{content:'';display:block;align-self:center;border-top:1px solid #e5e5e5}
+}
+
+/* Extend only the contents rules; keep the established vertical rhythm. */
+@media(min-width:1101px){.literature-page .book-contents{width:calc(100% + 32px)}}
+.literature-page .book-entry-genre{justify-self:end;text-align:right}
+.literary-text h3{margin-top:1.5em;margin-bottom:.8em}
+.literary-text p:has(+h3){margin-bottom:.8em}
+
+/* Lengthen only the rules without moving the contents labels. */
+@media(min-width:1101px){.literature-page .book-entry-list li:not(:last-child)::after{width:calc(100% + 24px);margin-left:-12px}}
+
+/* Give the contents a full-width grid track instead of a title-sized auto track. */
+@media(min-width:1101px){
+.literature-page .book-contents{width:100%}
+.literature-page .book-entry-list{width:100%;grid-template-columns:minmax(0,1fr);justify-content:stretch}
+.literature-page .book-entry-list a{width:100%;grid-template-columns:24px minmax(0,1fr) auto}
+.literature-page .book-entry-list li:not(:last-child)::after{width:100%;margin-left:0}
+}
+
+.detail-book-nav a{display:flex;flex-direction:column;align-items:center;gap:8px}
+.detail-book-nav small{font-size:10px;font-weight:400;color:#999;line-height:1.4}
+.detail-book-nav a[aria-current=page]{font-weight:650}
+@media(max-width:750px){.detail-book-nav a{align-items:flex-start}.detail-book-nav small{font-size:9px}}
+
+/* Events stay above the archive; the exhibition has its own full page. */
+body:has(.event-dialog[open]){overflow:hidden}
+.event-dialog{box-sizing:border-box;width:min(660px,calc(100% - 40px));max-width:none;max-height:88svh;margin:auto;border:0;border-radius:2px;padding:0 34px 45px;background:#fff;color:#171717;box-shadow:0 12px 60px #0002;overscroll-behavior:contain;font-family:'Pretendard',sans-serif}
+.event-dialog::backdrop{background:#0005}
+.event-dialog-toolbar{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;background:#fff;padding:18px 0;font-size:11px;color:#777}
+.event-dialog-toolbar button{font:inherit;font-size:13px;cursor:pointer;border:0;background:none;color:#333;padding:8px 0 8px 16px}
+.event-dialog-image{display:block;width:100%;height:auto}
+.event-dialog-copy{max-width:500px;margin:35px auto 0}
+.event-dialog-copy h2{font-size:21px;line-height:1.55;letter-spacing:-.025em;font-weight:650;margin:0 0 22px;word-break:keep-all}
+.occasion-information{font-family:'Pretendard',sans-serif;font-size:14px;line-height:1.9;white-space:pre-wrap;word-break:keep-all;margin:0 0 36px}
+.occasion-text{font-family:'Nanum Myeongjo','AppleMyungjo',serif;font-size:16px;line-height:2;letter-spacing:-.01em;white-space:pre-wrap;word-break:keep-all;overflow-wrap:break-word;margin:0}
+.exhibition-article{padding:55px 6% 100px;max-width:1000px;margin:auto}
+.exhibition-category{font-size:14px;margin:0 0 20px}
+.exhibition-article h1{font-size:clamp(25px,2.8vw,40px);font-weight:500;line-height:1.5;letter-spacing:-.035em;margin:0 0 50px;word-break:keep-all;outline:none}
+.exhibition-poster{display:block;width:min(100%,620px);height:auto;margin:auto}
+.exhibition-copy{width:min(100%,500px);margin:55px auto 0}
+.exhibition-rule{border-top:1px solid #111;margin:38px 0}
+@media(max-width:650px){.event-dialog{width:calc(100% - 24px);padding:0 20px 32px;max-height:90svh}.event-dialog-copy h2{font-size:19px}.occasion-text{font-size:15px}.occasion-information{font-size:13px}.exhibition-article{padding-top:30px;padding-bottom:65px}.exhibition-article h1{margin-bottom:32px}.exhibition-copy{margin-top:38px}}
+
+.occasion-text a{color:inherit;text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:3px}
+.occasion-text a:hover{text-decoration-color:currentColor}
+.event-gallery-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;border-radius:0}
+.event-gallery-track::-webkit-scrollbar{display:none}
+.event-gallery-track .event-dialog-image{flex:0 0 100%;width:100%;min-width:0;object-fit:contain;align-self:flex-start;scroll-snap-align:start}
+.event-gallery-controls{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 0 0}
+.event-gallery-controls>button{border:0;background:none;font:inherit;font-size:18px;cursor:pointer;padding:4px 8px;color:#333}
+.event-gallery-controls>button:disabled{opacity:.2;cursor:default}
+.event-gallery-dots{display:flex;gap:7px;align-items:center}
+.event-gallery-dots button{display:block;width:7px;height:7px;border:0;border-radius:50%;padding:0;background:#ddd;cursor:pointer}
+.event-gallery-dots button[aria-current=true]{background:#555}
+.event-gallery-count{font-size:10px;color:#888;font-variant-numeric:tabular-nums}
+.event-dialog :is(a,button,.event-gallery-track):focus-visible{outline:2px solid #4458aa;outline-offset:4px}
+
+/* Exhibition follows the same cover / information / related-work header. */
+.exhibition-page .detail-page-layout{padding-bottom:65px;min-height:0}
+.exhibition-page .detail-page-info{display:flex;flex-direction:column}
+.exhibition-page .detail-page-category{margin-bottom:20px}
+.exhibition-page .detail-page-info h1{margin-bottom:24px}
+.exhibition-page .detail-page-artist{margin:0 0 22px}
+.exhibition-page .occasion-information{margin:0;white-space:pre-wrap}
+.exhibition-shop-link{margin-top:auto;padding-top:28px;font-size:14px;line-height:1.7;word-break:keep-all}
+.exhibition-shop-link a:hover{text-decoration:underline;text-underline-offset:4px}
+.exhibition-related-book{min-width:0}
+.exhibition-related-book a{display:flex;flex-direction:column;align-items:flex-start;gap:18px;width:fit-content;max-width:100%}
+.exhibition-related-book img{display:block;width:140px;max-width:100%;height:auto}
+.exhibition-related-book span{font-size:12px;line-height:1.7;word-break:keep-all;color:#777}
+.exhibition-related-book a:hover span{text-decoration:underline;text-underline-offset:4px}
+@media(min-width:1101px){.exhibition-page .detail-page-info{min-height:var(--exhibition-poster-height,0px)}.exhibition-related-book{padding-top:var(--exhibition-related-offset,0px)}}
+@media(max-width:1100px){.exhibition-related-book{grid-column:2}.exhibition-shop-link{margin-top:24px}.exhibition-related-book img{width:120px}}
+@media(max-width:650px){.exhibition-page .detail-page-layout{padding-bottom:38px}.exhibition-related-book{grid-column:auto}.exhibition-related-book img{width:110px}.exhibition-shop-link{font-size:13px}}
+
+/* Exhibition sections share music's reading width, typography, and highlights. */
+.exhibition-page .exhibition-section-nav{margin-top:24px;padding-top:0}
+.exhibition-related-book a{align-items:center;text-align:center;margin-inline:auto}
+.exhibition-related-book span{white-space:nowrap}
+.exhibition-artist-profile+.exhibition-artist-profile{margin-top:65px}
+.exhibition-artist-profile h3{font-family:'Pretendard',sans-serif;font-size:18px;font-weight:650;line-height:1.6;margin:0 0 8px}
+.exhibition-artist-name{font-family:'Pretendard',sans-serif;font-size:13px;color:#777;line-height:1.7;margin:0 0 28px}
+.exhibition-artist-english{margin-top:38px}
+.exhibition-map-link{display:block}
+.exhibition-map-link img{display:block;width:100%;height:auto}
+@media(min-width:1101px){
+.exhibition-page .detail-page-info h1{white-space:nowrap;width:max-content;max-width:none;font-size:clamp(26px,2.15vw,40px)}
+.exhibition-related-book{display:flex;justify-content:center;padding-left:18%;box-sizing:border-box}
+.exhibition-related-book a{align-self:flex-start}
+}
+@media(max-width:650px){.exhibition-artist-profile+.exhibition-artist-profile{margin-top:50px}.exhibition-related-book a{margin-inline:0}}
+
+/* A dedicated picture-book reader: original spreads, turning paper, quiet controls. */
+.picture-book-heading{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;gap:50px;max-width:1200px;margin:auto;padding:65px 5% 50px}
+.picture-book-heading .detail-page-category{margin:0 0 20px}
+.picture-book-heading h1{font-size:clamp(28px,3vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.45;word-break:keep-all;margin:0;outline:none}
+.picture-book-information{font-size:14px;line-height:1.9}
+.picture-book-information p{margin:6px 0 0}
+.picture-book-body{margin:0 2%;padding:55px 3% 75px;border-top:1px solid #111}
+.picture-reader{max-width:1100px;margin:auto}
+.picture-reader-stage{padding:24px 10px 32px;perspective:1800px;outline-offset:4px}
+.picture-reader-book{position:relative;width:100%;aspect-ratio:745.0909/526.3636;background:#f5f2e9;transform-style:preserve-3d;box-shadow:0 3px 0 #dedbd3,0 5px 0 #ece9e1,0 18px 30px #30271a1f}
+.picture-half,.picture-turn-face{background-size:200% 100%;background-repeat:no-repeat}
+.picture-half{position:absolute;top:0;width:50%;height:100%}
+.picture-half--left{background-position:left center}
+.picture-half--right{background-position:right center}
+.picture-half.picture-half--left{left:0}.picture-half.picture-half--right{right:0}
+.picture-reader-gutter{position:absolute;top:0;bottom:0;left:48.7%;width:2.6%;background:linear-gradient(90deg,transparent,#30271a15 48%,#30271a08 52%,transparent);pointer-events:none;z-index:2}
+.picture-turn{position:absolute;top:0;width:50%;height:100%;transform-style:preserve-3d;z-index:3;will-change:transform}
+.picture-turn--next{left:50%;transform-origin:left center;animation:picture-turn-next .75s cubic-bezier(.4,.05,.3,1) both}
+.picture-turn--previous{left:0;transform-origin:right center;animation:picture-turn-previous .75s cubic-bezier(.4,.05,.3,1) both}
+.picture-turn-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background-color:#fffdf6}
+.picture-turn-back{transform:rotateY(180deg)}
+.picture-turn-face::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 26px #36291c12;animation:picture-paper-shade .75s ease-in-out both}
+.picture-reader-controls{display:flex;justify-content:center;align-items:center;gap:32px;margin-top:22px}
+.picture-reader-controls button{width:44px;height:44px;border:0;background:none;font:inherit;font-size:23px;color:#333;cursor:pointer}
+.picture-reader-controls button:disabled{opacity:.2;cursor:default}
+.picture-reader-controls span{min-width:110px;text-align:center;font-size:12px;color:#777;font-variant-numeric:tabular-nums}
+.picture-reader-error{text-align:center;font-size:13px;color:#777;margin:15px 0 0}
+@keyframes picture-turn-next{from{transform:rotateY(0deg)}to{transform:rotateY(-180deg)}}
+@keyframes picture-turn-previous{from{transform:rotateY(0deg)}to{transform:rotateY(180deg)}}
+@keyframes picture-paper-shade{0%,100%{background:#32231300}50%{background:#32231322}}
+@media(max-width:650px){.picture-book-heading{grid-template-columns:1fr;gap:22px;padding:32px 6%}.picture-book-heading h1{font-size:29px}.picture-book-information{font-size:13px}.picture-book-body{margin:0 5%;padding:24px 0 45px}.picture-reader-stage{padding:16px 2px 24px}.picture-reader-controls{margin-top:8px;gap:24px}}
+@media(prefers-reduced-motion:reduce){.picture-turn,.picture-turn-face::after{animation:none}}
+.picture-reader-enlarge{display:block;width:fit-content;margin:12px auto 0;font-size:11px;color:#888!important;text-decoration:underline!important;text-underline-offset:4px}
+@media(min-width:651px){.picture-reader{max-width:min(1100px,calc((100svh - 180px)*1.4155))}}
+
+/* Make the exhibition's heading hierarchy clear across both typefaces. */
+.exhibition-page .detail-text-section h2{font-size:20px;font-weight:700}
+.exhibition-page .exhibition-artist-profile h3{font-size:19px;font-weight:700}
+.exhibition-page .detail-text{font-size:16px}
+@media(max-width:650px){.exhibition-page .detail-text{font-size:15px}}
+
+/* Begin with one closed front cover, then open it into the first spread. */
+.picture-reader-book{transition:transform .75s cubic-bezier(.4,.05,.3,1)}
+.picture-reader-book--closed,.picture-reader-book--closing{transform:translateX(-25%);background:transparent;box-shadow:none}
+.picture-reader-book--closed>.picture-half--left,.picture-reader-book--closed>.picture-reader-gutter{visibility:hidden}
+.picture-reader-book--closed>.picture-half--right{box-shadow:3px 3px 0 #dedbd3,5px 5px 0 #ece9e1,0 18px 30px #30271a1f}
+.picture-reader-book .picture-cover-image{background-position:left center}
+.picture-reader-book--opening>.picture-half--left{animation:picture-reveal-inside .75s ease both}
+.picture-cover-open{position:absolute;right:0;top:0;width:50%;height:100%;border:0;padding:0;background:transparent;cursor:pointer;z-index:4}
+.picture-cover-open:focus-visible{outline:2px solid #4458aa;outline-offset:6px}
+@keyframes picture-reveal-inside{0%{opacity:0}45%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.picture-reader-book{transition:none}.picture-reader-book--opening>.picture-half--left{animation:none}}
+
+/* Complete covers at both ends, and a separate 3D turn-over back to the front. */
+.picture-reader-book--back-closed{transform:translateX(25%);background:transparent;box-shadow:none}
+.picture-reader-book--back-closed>.picture-half--right,.picture-reader-book--back-closed>.picture-reader-gutter{visibility:hidden}
+.picture-reader-book--back-closed>.picture-half--left{box-shadow:-3px 3px 0 #dedbd3,-5px 5px 0 #ece9e1,0 18px 30px #30271a1f}
+.picture-reader-book .picture-back-cover-image{background-position:right center}
+.picture-cover-reset{left:0;right:auto}
+.picture-reader-book--resetting{transform:none;transition:none;background:transparent;box-shadow:none}
+.picture-reader-book--resetting>.picture-half,.picture-reader-book--resetting>.picture-reader-gutter{visibility:hidden}
+.picture-reset{position:absolute;left:25%;top:0;width:50%;height:100%;transform-style:preserve-3d;animation:picture-turn-over .85s cubic-bezier(.4,.05,.3,1) both;z-index:4}
+@keyframes picture-turn-over{from{transform:rotateY(0deg)}to{transform:rotateY(180deg)}}
+.picture-reader-turn-over,.picture-reader-mode button{display:block;margin:16px auto 0;border:0;border-bottom:1px solid #aaa;padding:4px 0;background:none;color:#555;font:inherit;font-size:12px;cursor:pointer;line-height:1.7}
+.picture-reader-mode{display:flex;justify-content:flex-end;margin-bottom:18px}
+.picture-reader-mode button{margin:0}
+.picture-reader-mode button:disabled{opacity:.4;cursor:default}
+button.picture-reader-enlarge{border:0;padding:0;background:none;font-family:inherit;cursor:pointer;line-height:1.7}
+.picture-proof-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 24px;padding:24px 0}
+.picture-proof-gallery>button{display:flex;flex-direction:column;gap:12px;align-items:center;min-width:0;border:0;padding:0;background:none;cursor:zoom-in;font:inherit;color:#888}
+.picture-proof-gallery img{display:block;width:100%;height:auto;box-shadow:0 3px 12px #0000000d}
+.picture-proof-gallery span{font-size:11px;line-height:1.7}
+.picture-proof-gallery>button:hover img{box-shadow:0 5px 18px #0002}
+@media(max-width:750px){.picture-proof-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 18px}}
+@media(max-width:450px){.picture-proof-gallery{grid-template-columns:1fr;gap:30px}}
+@media(prefers-reduced-motion:reduce){.picture-reset{animation:none}}
+
+/* Portrait event images always fit inside the visible popup. */
+.event-gallery-frame{height:min(62svh,660px);background:#faf9f7}
+.event-gallery-enlarge{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.event-gallery-frame .event-dialog-image{width:100%;height:100%;max-height:100%;object-fit:contain}
+.event-gallery-controls .event-gallery-zoom-label{font-size:11px;text-decoration:underline;text-underline-offset:3px;padding-inline:0;color:#777}
+@media(max-width:650px){.event-gallery-frame{height:min(59svh,580px)}.event-gallery-controls{gap:11px}}
+
+/* A viewport-sized image viewer, shared by unbound pages and event images. */
+body:has(.image-viewer[open]){overflow:hidden}
+.image-viewer{box-sizing:border-box;width:calc(100vw - 32px);max-width:1600px;height:calc(100svh - 32px);max-height:none;border:0;padding:0 24px;background:#fff;color:#171717;font-family:'Pretendard',sans-serif;overscroll-behavior:contain;overflow:hidden}
+.image-viewer[open]{display:grid;grid-template-rows:56px minmax(0,1fr) 60px}
+.image-viewer::backdrop{background:#0009}
+.image-viewer-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:12px;color:#777}
+.image-viewer-toolbar>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.image-viewer button{border:0;background:none;font:inherit;color:inherit;cursor:pointer;padding:8px}
+.image-viewer-toolbar button{white-space:nowrap}
+.image-viewer-stage{min-height:0;display:flex;align-items:center;justify-content:center}
+.image-viewer-stage img{display:block;width:100%;height:100%;object-fit:contain}
+.image-viewer-controls{display:flex;justify-content:center;align-items:center;gap:30px}
+.image-viewer-controls button{font-size:20px;min-width:44px;min-height:44px}
+.image-viewer-controls button:disabled{opacity:.2;cursor:default}
+.image-viewer-controls span{font-size:11px;color:#777}
+.image-viewer :is(button,a):focus-visible{outline:2px solid #4458aa;outline-offset:3px}
+@media(max-width:650px){.image-viewer{width:calc(100vw - 16px);height:calc(100svh - 16px);padding-inline:12px}}
+
+/* Connections follow the work across formats, without changing its genre. */
+.archive-filterbar{grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:3vw}
+.archive-connection select{font-size:13px}
+.connected-works{max-width:1200px;margin:40px auto 65px}
+.connected-eyebrow{font-size:12px;color:#888;margin:0 0 18px}
+.connected-works header h2{font-size:clamp(23px,2.7vw,36px);font-weight:500;line-height:1.6;letter-spacing:-.035em;margin:0 0 50px}
+.connected-path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9%;padding:0;margin:0;list-style:none}
+.connected-path li{position:relative;min-width:0}
+.connected-path li+li::before{content:'→';position:absolute;left:-19%;top:130px;font-size:20px;color:#aaa}
+.connected-path-art{height:280px;display:flex;align-items:center;justify-content:center}
+.connected-path-art img{display:block;max-width:100%;max-height:100%;height:auto;width:auto;object-fit:contain}
+.connected-path-caption{padding-top:25px}
+.connected-path-caption>span{font-size:11px;color:#888}
+.connected-path-caption h3{font-size:16px;font-weight:500;line-height:1.7;letter-spacing:-.02em;word-break:keep-all;margin:12px 0}
+.connected-path-caption p{font-size:12px;color:#888;line-height:1.7;margin:0;word-break:keep-all}
+.connected-path a:hover h3{text-decoration:underline;text-underline-offset:5px}
+@media(max-width:1000px){.archive-filterbar{grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:20px 28px}.archive-reset{grid-column:3;grid-row:1/3}.connected-path{gap:7%}.connected-path-art{height:220px}.connected-path li+li::before{top:100px;left:-17%}}
+@media(max-width:650px){.archive-filterbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}.archive-reset{grid-row:auto;grid-column:2;justify-self:end}.connected-path{grid-template-columns:1fr;gap:75px;max-width:320px;margin:auto}.connected-path li+li::before{content:'↓';top:-52px;left:50%;transform:translateX(-50%)}.connected-path-art{height:270px}.connected-works{margin-top:30px}.connected-works header h2{margin-bottom:35px}.connected-path-caption{text-align:center}}
+
+.archive-brand{display:block;width:52px;height:52px}
+.archive-brand img{display:block;width:100%;height:100%;object-fit:contain}
+.connected-works{margin-top:45px}
+
+/* Stable paper geometry and predecoded artwork for react-pageflip. */
+.pf-reader-bound[hidden]{display:none}
+.pf-reader-stage{position:relative;width:100%;aspect-ratio:880/622;isolation:isolate;outline-offset:6px;perspective:1800px}
+.pf-center{position:absolute;inset:0;transition:transform .75s cubic-bezier(.4,.05,.3,1);will-change:transform}
+.pf-center--front{transform:translateX(-25%)}
+.pf-center--back{transform:translateX(25%)}
+.pf-center--open{transform:none}
+.pf-center--resetting{visibility:hidden;transition:none}
+.picture-flipbook{margin:auto}
+.flipbook-leaf{background:#fffdf6;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flipbook-leaf img{position:absolute;top:0;width:200%;height:100%;max-width:none;display:block;pointer-events:none;user-select:none;-webkit-user-select:none}
+.flipbook-leaf--left img{left:0}.flipbook-leaf--right img{left:-100%}
+.pf-cover-open{position:absolute;inset:0 25%;border:0;padding:0;background:none;cursor:pointer;z-index:3}
+.pf-loading{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-size:12px;color:#888;margin:0}
+.pf-reset-cover{position:absolute;left:25%;top:0;width:50%;height:100%;transform-style:preserve-3d;animation:picture-turn-over .85s cubic-bezier(.4,.05,.3,1) both}
+.pf-reset-face{position:absolute;inset:0;background-size:200% 100%;background-position:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.pf-reset-front{background-position:left center;transform:rotateY(180deg)}
+.pf-reader-bound>.picture-reader-mode{justify-content:center;margin:18px 0 0}
+.picture-reader:has(.pf-reader-bound)>.picture-reader-mode{margin-bottom:22px}
+@media(prefers-reduced-motion:reduce){.pf-center{transition:none}.pf-reset-cover{animation:none}}
+
+.picture-reader-enlarge,.picture-reader-mode button{font-size:12px;line-height:1.7}
+.pf-book-toggle{position:absolute;inset:0;border:0;padding:0;background:transparent;cursor:pointer;z-index:3}
+.pf-book-toggle--cover{inset-inline:25%}
+.pf-book-toggle:focus-visible{outline:2px solid #4458aa;outline-offset:5px}
+
+/* Close from the visible spread without jumping to the final inside pages. */
+.pf-shut{position:absolute;inset:0;transform-style:preserve-3d;animation:pf-shut-center .75s cubic-bezier(.4,.05,.3,1) both}
+.pf-shut-left{position:absolute;inset:0 50% 0 0;background-size:200% 100%;background-position:left center}
+.pf-shut-flap{position:absolute;inset:0 0 0 50%;transform-style:preserve-3d;transform-origin:left center;animation:picture-turn-next .75s cubic-bezier(.4,.05,.3,1) both}
+.pf-shut-face{position:absolute;inset:0;background-size:200% 100%;background-position:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.pf-shut-back{transform:rotateY(180deg)}
+@keyframes pf-shut-center{from{transform:translateX(0)}to{transform:translateX(25%)}}
+
+/* The nearer cover determines which way the visible book closes. */
+.pf-shut--front{animation-name:pf-shut-front-center}
+.pf-shut--front .pf-shut-left{inset:0 0 0 50%;background-position:right center}
+.pf-shut--front .pf-shut-flap{inset:0 50% 0 0;transform-origin:right center;animation-name:picture-turn-previous}
+.pf-shut--front .pf-shut-face{background-position:left center}
+@keyframes pf-shut-front-center{from{transform:translateX(0)}to{transform:translateX(-25%)}}
+.pf-edge-nav{position:absolute;inset:0 -40px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;z-index:5}
+.pf-edge-nav button{display:grid;place-items:center;width:32px;height:44px;flex:none;border:0;background:none;padding:0;font:inherit;font-size:22px;color:#555;cursor:pointer;pointer-events:auto}
+.pf-edge-nav button:disabled{visibility:hidden;pointer-events:none}
+.pf-reader-bound>.picture-reader-mode{margin-top:28px}
+@media(max-width:650px){.pf-edge-nav{inset-inline:-16px}.pf-edge-nav button{width:24px;font-size:18px}}
+
+.picture-book-mode-link{display:block;margin:14px 0 0;padding:0;border:0;border-bottom:1px solid #aaa;background:none;color:#666;font:inherit;font-size:12px;line-height:1.8;cursor:pointer}
+.picture-book-mode-link:disabled{opacity:.4;cursor:default}
+.picture-reader-page-number{margin:28px 0 0;text-align:center;font-size:12px;line-height:1.7;color:#777;font-variant-numeric:tabular-nums}

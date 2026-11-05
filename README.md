@@ -1,30 +1,54 @@
 # Homepage
 
-React + TypeScript + Vite 기반 웹사이트입니다.
+React + TypeScript + Vite로 만든 박서음의 아코디언북 홈페이지입니다.
 
 ## 개발
 
-Node.js 24 LTS를 사용합니다. 최초 설치 후 터미널을 다시 열거나 `source ~/.zshrc`를 실행하세요.
+Node.js 24 LTS를 사용합니다.
 
 ```sh
 npm install
 npm run dev
 ```
 
-## 빌드
+## 확인 및 빌드
 
 ```sh
+npm run lint
 npm run build
 npm run preview
 ```
 
-빌드 결과는 `dist/`에 생성됩니다. GitHub Pages 사용자 사이트(`parkse0eum.github.io`)의 루트 경로를 기준으로 구성되어 있습니다.
+빌드 결과는 `dist/`에 생성됩니다. GitHub Pages 사용자 사이트(`parkse0eum.github.io`)의 루트 경로를 기준으로 구성되어 있습니다. 실제 사이트 반영에는 별도 배포가 필요합니다.
 
 ## 주요 파일
 
-- `src/App.tsx`: 메인 화면
-- `src/App.css`: 화면 스타일
-- `src/index.css`: 공통 스타일
-- `public/`: 정적 파일
+- `src/App.tsx`: 홈 화면과 책 각 면의 React 컴포넌트
+- `src/book/content.ts`: 각 면의 제목, 설명, 이미지 경로
+- `src/book/animation.ts`: 책 펼치기·접기, 드래그, 키보드 조작과 애니메이션
+- `src/App.css`: 화면 디자인과 반응형 스타일
+- `src/main.tsx`: React 진입점
+- `index.html`: React를 불러오는 HTML 틀
+- `public/images/book/`: 현재 홈 화면에서 사용하는 이미지 (중복 제거, 용도별 이름)
+- `public/vendor/`: 원본에 포함된 GSAP 3.15.0과 출처·라이선스 안내
 
-GitHub 연결과 배포는 별도 작업입니다.
+화면과 콘텐츠는 React·TypeScript 파일에서 수정합니다. 원본 HTML의 디자인, 이미지, 접힘 효과를 유지하며, 컴포넌트가 해제되면 이벤트와 애니메이션을 정리합니다.
+
+## 이미지 관리
+
+- `.local-assets/originals/서음이미지/`: 받은 원본을 파일명과 내용 그대로 보관합니다. Git에서 제외하며 빌드·배포에도 포함하지 않습니다. 로컬 전용이므로 다른 컴퓨터에는 별도로 백업해야 합니다.
+- `public/images/book/`: 현재 홈페이지에서 사용 중인 이미지입니다. 기존 디자인을 유지하도록 HTML에서 추출한 이미지를 사용합니다. 예: `/images/book/cover.png`.
+- `src/assets/library/`: 받은 이미지의 작업용 사본입니다. `book/`, `backgrounds/`, `projects/`, `icons/`, `misc/`로 분류하고 소문자 영문 파일명으로 정리했습니다. 코드에서 import한 파일만 빌드에 포함됩니다.
+- `src/assets/library/manifest.json`: 원래 파일명과 정리한 경로, 원본 확인용 SHA-256 해시의 대응표입니다.
+
+라이브러리의 이미지를 화면에 넣을 때:
+
+```tsx
+import image from './assets/library/projects/blue-or-not.png'
+
+<img src={image} alt="블루오어낫" />
+```
+
+책 각 면의 현재 이미지 경로는 `src/book/content.ts`에서 관리합니다. 표지는 `src/App.tsx`, 홈 배경과 표지 마스크는 `src/App.css`에 있습니다. `misc/image-01.png`, `misc/image-02.png`는 원래 이름이 숫자라 용도를 추정하지 않고 보관했습니다.
+
+추가 면은 `src/assets/library/book/works.png` 원본 한 장을 사용합니다. 비율을 유지해 확대하고, 연필 곡선을 삼각형 아래 양 끝에 맞춥니다.

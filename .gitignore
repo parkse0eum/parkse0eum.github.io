@@ -26,3 +26,6 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Local original artwork archive (never deploy)
+.local-assets/
