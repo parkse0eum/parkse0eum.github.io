@@ -519,11 +519,43 @@ export function mountBook(host: HTMLElement) {
   cover.inert = false;
   cover.setAttribute('aria-hidden', 'false');
   cover.setAttribute('aria-expanded', 'false');
+  // Keep hidden artwork off the network until the visitor opens the house.
+  // Decode before moving so images do not pop in during the fold animation.
+  let artwork: Promise<void> | undefined;
+  function prepareArtwork() {
+    if (artwork) return artwork;
+    const urls = new Set<string>();
+    host.querySelectorAll<HTMLElement>('[data-home-background]').forEach(element => {
+      const url = element.dataset.homeBackground!;
+      element.style.backgroundImage = `url("${url}")`;
+      urls.add(url);
+    });
+    host.querySelectorAll<SVGImageElement>('[data-home-src]').forEach(element => {
+      const url = element.dataset.homeSrc!;
+      element.setAttribute('href', url);
+      urls.add(url);
+    });
+    artwork = Promise.all([...urls].map(url => {
+      const image = new Image();
+      image.src = url;
+      return image.decode().catch(() => undefined);
+    })).then(() => undefined);
+    return artwork;
+  }
   let opened = false;
   let busy = false;
   async function change(next: boolean) {
     if (busy || next === opened) return;
     busy = true;
+    if (next) {
+      const enter = host.querySelector<HTMLButtonElement>('[data-home-open]')!;
+      enter.textContent = '펼치는 중…';
+      enter.setAttribute('aria-busy', 'true');
+      await prepareArtwork();
+      enter.textContent = '들어가며';
+      enter.removeAttribute('aria-busy');
+      if (signal.aborted) return;
+    }
     root.inert = true;
     cover.inert = true;
     cover.setAttribute('aria-hidden','true');

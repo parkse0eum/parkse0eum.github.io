@@ -30,7 +30,6 @@ body:has(.works-archive[open]){overflow:hidden}
 .detail-contents small{font-size:11px;color:#999;margin-left:16px}
 .archive-filterbar{grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:5vw}
 @media(max-width:650px){.archive-filterbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}.archive-reset{grid-column:auto}}
-.work-art img[src$="mongledum-001.png"],.detail-image[src$="mongledum-001.png"]{background:#4f5955}
 
 /* Equal book widths; Ogle is five percent taller than Blue or Not. */
 .work-card--book .work-art:has(img[src$="to-book-corrected.png"]){aspect-ratio:788 / 1155}
@@ -76,7 +75,6 @@ body:has(.works-page){background:#fff;color:#171717;overflow:auto}
 .detail-page-gallery{display:grid;gap:40px;max-width:900px;margin:0 auto;padding:0 5% 60px}
 .detail-page-gallery img{display:block;width:100%;height:auto}
 .detail-page-footer{padding:28px 5%;border-top:1px solid #ddd;font-size:12px}
-.detail-page-art img[src$="mongledum-001.png"]{background:#4f5955}
 @media(max-width:750px){.detail-page-header{padding:22px 6%}.detail-album-nav{gap:22px;padding:14px 6% 24px;font-size:12px;justify-content:flex-start;overflow:auto}.detail-album-nav a{white-space:nowrap}.detail-page-layout{grid-template-columns:1fr;gap:42px;padding:35px 6% 65px}.detail-page-art{position:static;max-width:460px;width:100%;margin:auto}.detail-page-art img{max-height:65svh}.detail-page-info{padding:0}.detail-page-info h1{font-size:32px}.detail-page-category{margin-bottom:16px;font-size:12px}.detail-text{font-size:14px}.detail-section-nav{margin-top:35px}.detail-credits>div{grid-template-columns:1fr 1.2fr;gap:12px}.music-service-links a{padding:18px 13px}.detail-text-section{margin-top:38px}}
 
 /* Cover, title, and listening links form one header above a full-width rule. */

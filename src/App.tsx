@@ -1,10 +1,10 @@
-import { useLayoutEffect, useRef } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import { BOOKS } from './book/content'
 import { PAGE_LAYOUTS } from './book/layout'
 import type { PageIcon } from './book/layout'
 import { mountBook } from './book/animation'
 import './App.css'
-import WorksArchive from './works/WorksArchive'
+const WorksArchive = lazy(() => import('./works/WorksArchive'))
 import { archiveUrl, navigate, useLocationSearch } from './works/navigation'
 
 function IconArtwork({ icon }: { icon: PageIcon }) {
@@ -12,7 +12,7 @@ function IconArtwork({ icon }: { icon: PageIcon }) {
   const [x, y, w, h] = icon.crop ?? [0, 0, width, height]
   return <svg className="book__icon-image" viewBox={icon.rotate ? `0 0 ${h} ${w}` : `${x} ${y} ${w} ${h}`} preserveAspectRatio={icon.stretch ? 'none' : undefined} role="img" aria-label={icon.label}>
     <g transform={icon.rotate ? `translate(${h} 0) rotate(90) translate(${-x} ${-y})` : undefined}>
-      <image href={icon.image} width={width} height={height} />
+      <image data-home-src={icon.image} width={width} height={height} />
     </g>
   </svg>
 }
@@ -31,7 +31,7 @@ function Home() {
           <div className="lep__boards" aria-hidden="true">{[0, BOOKS.length - 1].map(i => <div className="leaf cover-plane" data-board={i} key={i}><div className="cover-board" /></div>)}</div>
           <div className="lep__strip" data-strip="">{BOOKS.map(([title, , image], i) => <div key={title} data-page={PAGE_LAYOUTS[i].id} className={`leaf${i === 0 ? ' leaf--first' : ''}${i === BOOKS.length - 1 ? ' leaf--last' : ''}`} role="group" aria-roledescription="slide" aria-label={`${i + 1} / ${BOOKS.length}: ${title.split('|').join(' ')}`}>
             <div className="leaf__face leaf__face--front">
-              <div className="paper-surface" style={{ backgroundImage: `url('${image}')` }} />
+              <div className="paper-surface" data-home-background={image} />
               <div className="book">
                 <h2 className={`book__title${['about', 'extra', 'contact'].includes(PAGE_LAYOUTS[i].id) ? ' book__title--english' : ''}`}>{title}</h2>
                 {PAGE_LAYOUTS[i].id === 'about' && <div className="home-page-copy home-about-copy"><div className="home-about-intro"><p className="home-author-name">박서음 <span className="home-author-latin">Park Seoeum</span></p><p className="home-greeting">“안녕히히히,<br />여기는 시 쓰고 노래하는<br />서음이의 집이야요”</p></div><div className="home-social-links" aria-label="박서음 SNS"><a href="https://www.instagram.com/parkse0eum/" target="_blank" rel="noopener noreferrer" aria-label="인스타그램"><svg className="home-social-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" /></svg></a><a href="https://youtube.com/@parkse0eum_official?si=cSgfpzSjKNZXSPiT" target="_blank" rel="noopener noreferrer" aria-label="유튜브"><svg className="home-social-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.6 4.6 12 4.6 12 4.6s-5.6 0-7.5.5a3 3 0 0 0-2.1 2.1C1.9 9.1 1.9 12 1.9 12s0 2.9.5 4.8a3 3 0 0 0 2.1 2.1c1.9.5 7.5.5 7.5.5s5.6 0 7.5-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-4.8.5-4.8s0-2.9-.5-4.8Z" /><path fill="#fffdf4" d="m10 15.4 5.5-3.4L10 8.6Z" /></svg></a></div></div>}
@@ -49,7 +49,7 @@ function Home() {
               </div>
               <i className="leaf__shade" aria-hidden="true" />
             </div>
-            <div className="leaf__face leaf__face--back" aria-hidden="true"><i className="leaf__shade" />{i === 0 && <img className="cover-art" src="/images/book/cover.png" alt="직접 그린 집 모양 겉표지" draggable={false} />}</div>
+            <div className="leaf__face leaf__face--back" aria-hidden="true"><i className="leaf__shade" />{i === 0 && <img className="cover-art" src="/images/book/cover.png" fetchPriority="high" alt="직접 그린 집 모양 겉표지" draggable={false} />}</div>
           </div>)}</div>
         </div>
         <button className="accessible-close" id="closeBook" type="button">책 닫기</button>
@@ -63,5 +63,5 @@ function Home() {
 
 export default function App() {
   const search = useLocationSearch()
-  return new URLSearchParams(search).get('view') === 'works' ? <WorksArchive /> : <Home />
+  return new URLSearchParams(search).get('view') === 'works' ? <Suspense fallback={<div className="archive-loading" role="status">이야기를 펼치는 중…</div>}><WorksArchive /></Suspense> : <Home />
 }

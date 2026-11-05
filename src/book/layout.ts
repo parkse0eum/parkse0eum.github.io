@@ -1,7 +1,7 @@
 import mongledum from '../assets/library/icons/mongledum-white.png'
-import exhibition from '../assets/library/projects/two-person-exhibition-poster.jpg'
-import chamomile from '../assets/library/icons/image-01.png'
-import dream from '../assets/library/icons/image-02.png'
+const exhibition = '/images/home/exhibition.webp'
+const chamomile = '/images/home/chamomile.webp'
+const dream = '/images/home/dream.webp'
 
 export type PageIcon = { source: [number, number]; crop?: [number, number, number, number]; label: string; image?: string; rotate?: boolean; stretch?: boolean; href?: string }
 export type PageLayout = { id: string; name?: string; icons: PageIcon[] }
@@ -12,8 +12,8 @@ export const PAGE_LAYOUTS: PageLayout[] = [
     { label: '네잠꿈나 2인전', source: [2100, 2800], image: exhibition, href: '?view=works&work=dream-exhibition' },
   ] },
   { id: 'writing', icons: [
-    { label: '( )가 ( )에게', stretch: true, source: [1076, 1462], image: '/images/works/to-book-corrected.png', href: '?view=works&work=to' },
-    { label: 'Blue or Nah', stretch: true, source: [788, 1100], image: '/images/works/blue-or-not.png', href: '?view=works&work=blue-or-not' },
+    { label: '( )가 ( )에게', stretch: true, source: [1076, 1462], image: '/images/home/to.webp', href: '?view=works&work=to' },
+    { label: 'Blue or Nah', stretch: true, source: [788, 1100], image: '/images/home/blue.webp', href: '?view=works&work=blue-or-not' },
   ] },
   { id: 'music', icons: [
     { label: '캐모마일 달리기', source: [2775, 2622], image: chamomile },
