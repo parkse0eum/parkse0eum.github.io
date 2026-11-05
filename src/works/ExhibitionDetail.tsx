@@ -15,6 +15,7 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
   const artist = useRef<HTMLParagraphElement>(null)
   const copy = occasions[work.id]
   const book = works.find(item => item.id === 'dream-book')
+  const song = works.find(item => item.id === 'dream-song')
   useLayoutEffect(() => {
     let active = true
     const align = () => {
@@ -49,7 +50,11 @@ export default function ExhibitionDetail({ work }: { work: Work }) {
           <div className="exhibition-shop-link"><a href="https://smartstore.naver.com/kamereon/products/13854348106" target="_blank" rel="noopener noreferrer">카메레온 선물가게 : 전시 굿즈 판매 ↗</a></div>
           <nav className="detail-section-nav exhibition-section-nav" aria-label="전시 상세 항목"><a href="#exhibition-intro">전시 소개</a><a href="#exhibition-artists">작가 소개</a><a href="#exhibition-map">전시 지도</a></nav>
         </div>
-        {book?.image && <aside className="exhibition-related-book" aria-label="관련 그림책">
+        {book?.image && <aside className="exhibition-related-book" aria-label="함께 이어지는 음악과 그림책">
+          {song?.image && <a className="exhibition-related-song" href={archiveUrl(song.id)} onClick={event => {
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+            event.preventDefault(); navigate(archiveUrl(song.id))
+          }}><img src={song.image} alt={`음악 〈${song.title}〉 앨범 자켓`} loading="lazy" /><span>음악 듣기</span></a>}
           <a href={archiveUrl(book.id)} onClick={event => {
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
             event.preventDefault(); navigate(archiveUrl(book.id))

@@ -9,6 +9,6 @@ const profiles: Record<string, string> = {
 
 export default function OccasionText({ text }: { text: string }) {
   return <>{text.split(/(@[A-Za-z0-9_.]+)/g).map((part, index) => profiles[part]
-    ? <a key={index} href={profiles[part]} target="_blank" rel="noopener noreferrer">{part}</a>
+    ? <a className="instagram-mention" key={index} href={profiles[part]} target="_blank" rel="noopener noreferrer">{part}</a>
     : part)}</>
 }

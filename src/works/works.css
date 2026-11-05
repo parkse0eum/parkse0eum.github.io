@@ -532,3 +532,19 @@ body:has(.image-viewer[open]){overflow:hidden}
 .pf-reset-cover{transform-origin:center center}
 @media(prefers-reduced-motion:reduce){.pf-center{transition:none}.pf-shut,.pf-shut-flap,.pf-reset-cover{animation:none}}
 .pf-reader-stage:has(.pf-reset-cover){perspective:2000px}
+
+/* Related artwork: equal widths, the square album immediately left of the book. */
+.exhibition-related-book{--related-art-width:140px;display:flex;align-items:flex-start;justify-content:center;gap:24px;padding-left:0}
+.exhibition-related-book a{flex:0 0 var(--related-art-width);width:var(--related-art-width);max-width:none;margin-inline:0;align-items:center;font-family:'Pretendard',sans-serif}
+.exhibition-related-book img{width:100%;max-width:none}
+.exhibition-related-song img{aspect-ratio:1;object-fit:contain}
+.exhibition-related-book span{font-family:inherit;font-size:12px;font-weight:500;line-height:1.7}
+.works-page a.instagram-mention{text-decoration-line:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:currentColor}
+.works-page a.instagram-mention:hover{opacity:.7}
+@media(max-width:1100px){.exhibition-related-book{--related-art-width:120px;justify-content:flex-start;gap:20px}}
+@media(max-width:650px){.exhibition-related-book{--related-art-width:110px;gap:22px}}
+/* Keyboard clicks keep the old toggle, but its invisible layer never intercepts
+   pointer input. The page-flip engine receives the real mouse/touch events. */
+.pf-book-toggle{pointer-events:none}
+.picture-flipbook{cursor:grab;touch-action:pan-y}
+.picture-reader[data-dragging] .picture-flipbook{cursor:grabbing}
