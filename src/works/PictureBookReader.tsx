@@ -121,7 +121,10 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
       const bounds = reader.current.getBoundingClientRect()
       const headerHeight = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 64
       const viewportHeight = window.visualViewport?.height ?? window.innerHeight
-      if (bounds.top < headerHeight + 12 || bounds.bottom > viewportHeight - 12) {
+      const controlsBottom = reader.current.querySelector('.picture-reader-pagination')?.getBoundingClientRect().bottom ?? bounds.bottom
+      const soundtrack = reader.current.closest('.picture-book-page')?.querySelector('.picture-book-soundtrack')
+      const videoInView = soundtrack && soundtrack.getBoundingClientRect().bottom > headerHeight
+      if (videoInView || bounds.top < headerHeight + 12 || controlsBottom > viewportHeight - 12) {
         reader.current.scrollIntoView({ block: 'start', inline: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
       }
     })

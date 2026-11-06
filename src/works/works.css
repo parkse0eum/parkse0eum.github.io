@@ -572,3 +572,17 @@ body:has(.image-viewer[open]){overflow:hidden}
 .picture-book-soundtrack-bar button{padding:3px 0 3px 12px;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
 .picture-book-soundtrack iframe{display:block;width:100%;height:214px;min-height:200px;border:0;background:#111}
 @media(max-width:650px){.album-related-links{font-size:12px;margin-top:14px}.picture-book-soundtrack iframe{height:200px}}
+
+/* Related links occupy existing whitespace, never push the album buttons down. */
+@media(min-width:651px){
+.work-page--music .detail-page-info{position:relative}
+.album-related-links{position:absolute;left:0;right:0;top:var(--music-related-top);height:var(--music-related-height);margin:0;justify-content:center;gap:4px;font-size:12px;line-height:1.35}
+.album-related-links[data-compact=true]{flex-direction:row;align-items:center;justify-content:flex-start;gap:14px}
+}
+
+.picture-book-headphones{color:#171717}
+.picture-book-headphones[aria-pressed=true]{color:#fff8b5}
+@media(max-width:650px){.picture-book-page--music-open .picture-book-body{margin-top:64px}}
+/* Leave enough trailing reading space to scroll the video fully off-screen,
+   even when the mobile spread is much shorter than the viewport. */
+.picture-book-page--music-open .pf-reader-bound{min-height:calc(100svh - var(--site-header-height) - 24px)}

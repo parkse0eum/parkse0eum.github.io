@@ -19,6 +19,8 @@ export default function WorkDetail({ work }: { work: Work }) {
   const cover = useRef<HTMLImageElement>(null)
   const release = useRef<HTMLParagraphElement>(null)
   const info = useRef<HTMLDivElement>(null)
+  const label = useRef<HTMLParagraphElement>(null)
+  const related = useRef<HTMLElement>(null)
   const sectionButtons = useRef<HTMLElement>(null)
   const album = music[work.id]
   useLayoutEffect(() => {
@@ -34,6 +36,14 @@ export default function WorkDetail({ work }: { work: Work }) {
         const start = release.current.getBoundingClientRect().top + 3
         container.style.setProperty('--music-links-offset', `${Math.max(0, start - contentTop)}px`)
         container.style.setProperty('--music-links-height', `${Math.max(0, sectionButtons.current.getBoundingClientRect().bottom - start)}px`)
+        const firstButton = sectionButtons.current.querySelector('a')
+        if (related.current && label.current && firstButton) {
+          const labelBottom = label.current.getBoundingClientRect().bottom
+          const space = Math.max(0, firstButton.getBoundingClientRect().top - labelBottom - 6)
+          container.style.setProperty('--music-related-top', `${labelBottom - info.current!.getBoundingClientRect().top + 3}px`)
+          container.style.setProperty('--music-related-height', `${space}px`)
+          related.current.dataset.compact = String(space < 40)
+        }
       }
     }
     const observer = new ResizeObserver(align)
@@ -69,8 +79,8 @@ export default function WorkDetail({ work }: { work: Work }) {
           {album ? <>
             <p className="detail-page-artist">박서음</p>
             <p className="detail-page-meta" ref={release}>{album.releaseDate} / 싱글 / 발라드</p>
-            <p className="detail-page-meta">{album.label} / 미러볼뮤직</p>
-            {work.id === 'dream-song' && <nav className="album-related-links" aria-label="이 노래에서 이어지는 작업">
+            <p className="detail-page-meta" ref={label}>{album.label} / 미러볼뮤직</p>
+            {work.id === 'dream-song' && <nav ref={related} className="album-related-links" aria-label="이 노래에서 이어지는 작업">
               <a href={archiveUrl('dream-book')} onClick={event => follow(event, archiveUrl('dream-book'))}>그림책 펼치기 ↗</a>
               <a href={archiveUrl('dream-exhibition')} onClick={event => follow(event, archiveUrl('dream-exhibition'))}>전시 놀러가기 ↗</a>
             </nav>}
