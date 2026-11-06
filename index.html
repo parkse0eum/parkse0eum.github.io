@@ -9,6 +9,13 @@
     <link rel="canonical" href="https://parkse0eum.com/" />
     <meta property="og:url" content="https://parkse0eum.com/" />
     <title>h0me - parkse0eum</title>
+    <script>
+      if (new URLSearchParams(location.search).get('view') !== 'works') {
+        const cover = document.createElement('link');
+        cover.rel = 'preload'; cover.as = 'image'; cover.href = '/images/book/cover.png'; cover.fetchPriority = 'high';
+        document.head.append(cover);
+      }
+    </script>
     <script defer src="/vendor/gsap.min.js"></script>
   </head>
   <body>

@@ -519,6 +519,21 @@ export function mountBook(host: HTMLElement) {
   cover.inert = false;
   cover.setAttribute('aria-hidden', 'false');
   cover.setAttribute('aria-expanded', 'false');
+  host.dataset.homeReady = 'false';
+  const coverImage = host.querySelector<HTMLImageElement>('.cover-art')!;
+  const backgroundUrl = getComputedStyle(document.body).backgroundImage.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
+  const background = new Image();
+  if (backgroundUrl) background.src = backgroundUrl;
+  const coverReady = Promise.all([
+    coverImage.decode(),
+    backgroundUrl ? background.decode() : Promise.resolve(),
+    document.fonts.load('400 14px Neujoh'),
+  ]).then(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (!signal.aborted) host.dataset.homeReady = 'true';
+    resolve();
+  }))));
+  // A failed image must not reveal the raw inner paper either.
+  void coverReady.catch(() => {});
   // Keep hidden artwork off the network until the visitor opens the house.
   // Decode before moving so images do not pop in during the fold animation.
   let artwork: Promise<void> | undefined;
@@ -551,7 +566,8 @@ export function mountBook(host: HTMLElement) {
       const enter = host.querySelector<HTMLButtonElement>('[data-home-open]')!;
       enter.textContent = '펼치는 중…';
       enter.setAttribute('aria-busy', 'true');
-      await prepareArtwork();
+      await coverReady;
+      await Promise.all([prepareArtwork(), document.fonts.load('700 18px Neujoh'), document.fonts.load('400 14px "Home Pretendard"')]);
       enter.textContent = '들어가며';
       enter.removeAttribute('aria-busy');
       if (signal.aborted) return;
@@ -600,6 +616,7 @@ export function mountBook(host: HTMLElement) {
 
   return () => {
     abort.abort();
+    host.dataset.homeReady = 'false';
     motion.destroy();
     document.body.classList.remove('is-open', 'is-transitioning');
   };
