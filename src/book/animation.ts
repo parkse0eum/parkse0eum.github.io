@@ -106,10 +106,11 @@ function initBook(host: HTMLElement, signal: AbortSignal) {
   function render() {
     const sp = spread * (1 + breathe * br);
     /* the chain: every card starts where the one before ends, turned by its own fold, one way or the other */
-    // A compressed concertina keeps an 8° gap at every alternating hinge.
+    // Leave an 18° gap at alternating hinges so the resting house reads as
+    // folded paper rather than a flat cover. The illustrated face keeps its angle.
     // Both covers stay attached to the ends; neither has a separate rotation.
     for (let i = 0; i < N; i++) {
-      const closed = i % 2 === 0 ? 148 : -24;
+      const closed = i % 2 === 0 ? 148 : -14;
       const unfolded = leaves[i].sign * foldOf(i, sp);
       leaves[i].phi = closed + (unfolded - closed) * binding.open;
     }
@@ -190,8 +191,11 @@ function initBook(host: HTMLElement, signal: AbortSignal) {
     }
     if (phase === 'closed') {
       const rect = host.querySelector<HTMLElement>('.cover-art')!.getBoundingClientRect();
+      const paper = leaves.filter(leaf => leaf.el.style.visibility !== 'hidden').map(leaf => leaf.el.getBoundingClientRect());
+      const left = Math.min(rect.left, ...paper.map(page => page.left));
+      const right = Math.max(rect.right, ...paper.map(page => page.right));
       const hit = host.querySelector<HTMLElement>('#coverHit')!;
-      Object.assign(hit.style, {left:`${rect.left}px`,top:`${rect.top}px`,width:`${rect.width}px`,height:`${rect.height}px`});
+      Object.assign(hit.style, {left:`${left}px`,top:`${rect.top}px`,width:`${right-left}px`,height:`${rect.height}px`});
     }
     /* the shadow on the table follows the strip */
     if (lo > hi) lo = hi = 0;

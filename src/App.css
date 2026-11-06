@@ -123,10 +123,9 @@ body { font-family:system-ui,-apple-system,'Apple SD Gothic Neo',sans-serif;back
 .home-page .lep,.home-page .home-bottom-nav{opacity:0;transition:opacity .24s ease}
 .home-page[data-home-ready="true"] .lep,.home-page[data-home-ready="true"] .home-bottom-nav{opacity:1}
 .home-page:not([data-home-ready="true"]) .cover-hit,.home-page:not([data-home-ready="true"]) .home-bottom-nav{pointer-events:none}
-body:not(.is-open):not(.is-transitioning) .home-page .lep__strip>.leaf:not(.leaf--first),
 body:not(.is-open):not(.is-transitioning) .home-page .leaf__face--front,
-body:not(.is-open):not(.is-transitioning) .home-page .lep__boards,
-body:not(.is-open):not(.is-transitioning) .home-page .lep__shadow{display:none}
+body:not(.is-open):not(.is-transitioning) .home-page .lep__boards{display:none}
+body:not(.is-open):not(.is-transitioning) .home-page .leaf:not(.leaf--first) .leaf__face--back{background:linear-gradient(90deg,#ddd6c9,#f7f1e7 20%,#f7f1e7 88%,#e2dacb)}
 @media(prefers-reduced-motion:reduce){.home-page .lep,.home-page .home-bottom-nav{transition:none}}
 
 .is-open .lep { visibility:visible;pointer-events:auto; }
