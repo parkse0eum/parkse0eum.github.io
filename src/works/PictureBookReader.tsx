@@ -206,16 +206,24 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
 
   return <section ref={reader} id="picture-book-reader" className="picture-reader" aria-label="네가 잠들면 꿈꾸는 건 나 그림책 읽기">
     <div className="pf-reader-bound" hidden={unbound}>
-      <div className="pf-reader-stage" tabIndex={0} aria-busy={!ready || locked} aria-label="그림책. 모서리를 끌거나 좌우 방향키로 넘기고, 가운데를 클릭하면 덮습니다." onPointerDownCapture={event => {
+      <div className="pf-reader-stage" tabIndex={0} aria-busy={!ready || locked} aria-label="그림책. 양쪽 바깥 중앙을 클릭하거나 모서리를 끌거나 좌우 방향키로 넘기고, 가운데를 클릭하면 덮습니다." onPointerDownCapture={event => {
         if (!event.isPrimary || event.button !== 0 || !(event.target as Element).closest('.picture-flipbook')) return
         gesture.current = { x: event.clientX, y: event.clientY, moved: false, active: true }
       }} onClick={event => {
         if (!(event.target as Element).closest('.picture-flipbook') || gesture.current?.moved || locked || resetting) return
-        // The engine owns drags and corner clicks; only a stationary body click
-        // keeps the original open / close / turn-over gesture.
+        // Leave native paper dragging untouched; stationary outer-middle taps
+        // turn a spread, while the center keeps the existing close gesture.
         if (flip.current?.pageFlip()?.getState() !== 'read') return
         if (current === 0 || current === lastPage) void next()
-        else closeBook()
+        else {
+          const bounds = event.currentTarget.querySelector('.stf__block')?.getBoundingClientRect()
+          if (!bounds) return
+          const x = (event.clientX - bounds.left) / bounds.width
+          const y = (event.clientY - bounds.top) / bounds.height
+          if (y >= 0.3 && y <= 0.7 && x >= 0 && x <= 0.25) void previous()
+          else if (y >= 0.3 && y <= 0.7 && x >= 0.75 && x <= 1) void next()
+          else closeBook()
+        }
       }} onKeyDown={event => {
         if (!ready) return
         if (event.key === 'ArrowLeft') { event.preventDefault(); previous() }
