@@ -586,3 +586,22 @@ body:has(.image-viewer[open]){overflow:hidden}
 /* Leave enough trailing reading space to scroll the video fully off-screen,
    even when the mobile spread is much shorter than the viewport. */
 .picture-book-page--music-open .pf-reader-bound{min-height:calc(100svh - var(--site-header-height) - 24px)}
+
+/* The rule starts immediately below the information; the entire remaining
+   reading screen belongs to the book and its pagination, vertically centered. */
+.picture-book-heading{padding-bottom:20px}
+.picture-book-body,.picture-book-page--music-open .picture-book-body{margin-top:0;padding:0}
+.picture-reader{width:100%;margin-inline:auto;max-width:min(1180px,calc((100svh - var(--site-header-height) - 132px) * 880 / 622))}
+.picture-book-page #picture-book-reader{scroll-margin-top:var(--site-header-height)}
+.pf-reader-bound,.picture-book-page--music-open .pf-reader-bound{min-height:calc(100svh - var(--site-header-height) - 2px);display:flex;flex-direction:column;justify-content:center;padding-block:24px}
+.pf-reader-bound[hidden]{display:none}
+.pf-center--preparing{visibility:hidden;pointer-events:none}
+.pf-loading{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:20px;font-size:13px;line-height:1.7}
+.pf-loading p{margin:0;color:#555}
+.pf-loading progress{appearance:none;-webkit-appearance:none;width:min(220px,80%);height:3px;border:0;background:#eee}
+.pf-loading progress::-webkit-progress-bar{background:#eee}
+.pf-loading progress::-webkit-progress-value{background:#777}
+.pf-loading progress::-moz-progress-bar{background:#777}
+.pf-loading span{font-size:12px;font-variant-numeric:tabular-nums}
+.pf-loading small{font-size:10px;color:#999;font-variant-numeric:tabular-nums}
+.pf-loading button{border:0;border-bottom:1px solid #aaa;background:none;padding:4px 0;font:inherit;color:#555;cursor:pointer}

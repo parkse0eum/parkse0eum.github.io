@@ -28,7 +28,7 @@ export default function WorksArchive() {
   const [connection, setConnection] = useState('전체')
   const reset = () => { setCategory('전체'); setYear('전체'); setQuery(''); setSort('mixed'); setConnection('전체') }
   useEffect(() => {
-    document.title = eventWork?.title ?? 'parkse0eum'
+    document.title = eventWork?.title ?? (selected ? `${selected.title} - parkse0eum` : 'w0rks - parkse0eum')
     if (!eventWork) window.scrollTo(0, selected ? 0 : archiveScroll.current)
     if (!selected) title.current?.focus({ preventScroll: true })
   }, [selected, eventWork])

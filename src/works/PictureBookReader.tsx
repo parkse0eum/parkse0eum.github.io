@@ -1,6 +1,7 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import HTMLFlipBook from 'react-pageflip'
 import ImageViewer from './ImageViewer'
+import usePictureBookAssets from './usePictureBookAssets'
 
 const spreadFormat = import.meta.env.PROD ? 'webp' : 'jpg'
 const spreads = Array.from({ length: 18 }, (_, index) => `/images/works/dream-book/spread-${String(index + 1).padStart(2, '0')}.${spreadFormat}`)
@@ -15,8 +16,8 @@ const pageLabel = (page: number) => page === 0 ? '앞표지' : page === lastPage
 type FlipApi = { flipNext: (corner?: string) => void; flipPrev: (corner?: string) => void; flip: (page: number, corner?: string) => void; turnToPage: (page: number) => void; getState: () => string; update: () => void; destroy: () => void }
 type FlipRef = { pageFlip: () => FlipApi }
 
-const FlipLeaf = forwardRef<HTMLDivElement, { spread: number; side: string; cover: boolean; index: number }>((props, ref) => <div ref={ref} className={`flipbook-leaf flipbook-leaf--${props.side}`} data-density="soft" aria-label={props.cover ? props.index === 0 ? '앞표지' : '뒤표지' : `${props.index}쪽`}>
-  <img src={spreads[props.spread]} alt="" draggable={false} decoding="async" loading={props.spread <= 1 ? 'eager' : 'lazy'} />
+const FlipLeaf = forwardRef<HTMLDivElement, { spread: number; side: string; cover: boolean; index: number; src: string }>((props, ref) => <div ref={ref} className={`flipbook-leaf flipbook-leaf--${props.side}`} data-density="soft" aria-label={props.cover ? props.index === 0 ? '앞표지' : '뒤표지' : `${props.index}쪽`}>
+  <img src={props.src} alt="" draggable={false} decoding="async" loading="eager" />
 </div>)
 FlipLeaf.displayName = 'FlipLeaf'
 
@@ -27,7 +28,8 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
   const gesture = useRef<{ x: number; y: number; moved: boolean; active: boolean } | null>(null)
   const centerMode = useRef('front')
   const position = useRef(0)
-  const decoded = useRef(new Map<number, Promise<void>>())
+  const { urls: imageUrls, progress, error: downloadError, retry } = usePictureBookAssets()
+  const downloaded = imageUrls.length === spreads.length
   const alive = useRef(true)
   useEffect(() => {
     alive.current = true
@@ -40,19 +42,12 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     }
   }, [])
   const loadSpread = useCallback(async (index: number) => {
-    let pending = decoded.current.get(index)
-    if (!pending) {
-      const image = new Image(); image.src = spreads[index]
-      pending = image.decode().catch(error => { decoded.current.delete(index); throw error })
-      decoded.current.set(index, pending)
-    }
-    await pending
-    // Decode the actual paper faces too: a cached preload alone does not force
-    // a lazy <img> to paint before the animation starts on mobile browsers.
+    const src = imageUrls[index]
+    if (!src) throw new Error('Book image is not ready')
     await Promise.all(Array.from(reader.current?.querySelectorAll<HTMLImageElement>('.flipbook-leaf img') ?? [])
-      .filter(image => image.getAttribute('src') === spreads[index])
-      .map(image => { image.loading = 'eager'; return image.decode() }))
-  }, [])
+      .filter(image => image.getAttribute('src') === src)
+      .map(image => image.decode()))
+  }, [imageUrls])
   const [current, setCurrent] = useState(0)
   const [ready, setReady] = useState(false)
   const [loadError, setLoadError] = useState(false)
@@ -70,13 +65,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
     return () => media.removeEventListener('change', update)
   }, [])
   // Keep every leaf and the library instance stable while its paper geometry animates.
-  const pages = useMemo(() => pageSpecs.map((page, index) => <FlipLeaf key={index} {...page} index={index} />), [])
-  useEffect(() => {
-    let active = true
-    Promise.all([loadSpread(0), loadSpread(1)])
-      .then(() => { if (active) setReady(true) }).catch(() => { if (active) setLoadError(true) })
-    return () => { active = false }
-  }, [loadSpread])
+  const pages = useMemo(() => downloaded ? pageSpecs.map((page, index) => <FlipLeaf key={index} {...page} index={index} src={imageUrls[page.spread]} />) : [], [downloaded, imageUrls])
   useEffect(() => {
     if (ready && !unbound) {
       for (const page of [Math.max(0, current - 2), Math.min(current + 2, lastPage)]) {
@@ -124,7 +113,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
       const controlsBottom = reader.current.querySelector('.picture-reader-pagination')?.getBoundingClientRect().bottom ?? bounds.bottom
       const soundtrack = reader.current.closest('.picture-book-page')?.querySelector('.picture-book-soundtrack')
       const videoInView = soundtrack && soundtrack.getBoundingClientRect().bottom > headerHeight
-      if (videoInView || bounds.top < headerHeight + 12 || controlsBottom > viewportHeight - 12) {
+      if (videoInView || bounds.top < headerHeight - 1 || controlsBottom > viewportHeight - 12) {
         reader.current.scrollIntoView({ block: 'start', inline: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
       }
     })
@@ -135,7 +124,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
   }, [])
   const next = async () => {
     const api = flip.current?.pageFlip()
-    if (!api || locked || resetting) return
+    if (!ready || !api || locked || resetting) return
     if (current === lastPage) {
       if (reduced) { api.turnToPage(0); return }
       setBusy(true); setResetting(true); return
@@ -152,7 +141,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
   }
   const previous = async () => {
     const api = flip.current?.pageFlip()
-    if (!api || current === 0 || locked || resetting) return
+    if (!ready || !api || current === 0 || locked || resetting) return
     const target = current === lastPage ? lastPage - 2 : Math.max(0, current - 2)
     setBusy(true)
     try {
@@ -176,14 +165,14 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
   }, [closing])
   const closeBook = () => {
     const api = flip.current?.pageFlip()
-    if (!api || locked || resetting || current === 0 || current === lastPage) return
+    if (!ready || !api || locked || resetting || current === 0 || current === lastPage) return
     const side = current < lastPage / 2 ? 'front' : 'back'
     if (reduced) { api.turnToPage(side === 'front' ? 0 : lastPage); return }
     setBusy(true); setClosing(side)
   }
   const jump = async (page: number) => {
     const api = flip.current?.pageFlip()
-    if (!api || locked || resetting) return
+    if (!ready || !api || locked || resetting) return
     setBusy(true)
     try {
       await loadSpread(pageSpecs[page].spread)
@@ -228,24 +217,38 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
         if (current === 0 || current === lastPage) void next()
         else closeBook()
       }} onKeyDown={event => {
+        if (!ready) return
         if (event.key === 'ArrowLeft') { event.preventDefault(); previous() }
         if (event.key === 'ArrowRight') { event.preventDefault(); next() }
         if (event.key === 'Home') { event.preventDefault(); jump(0) }
         if (event.key === 'End') { event.preventDefault(); jump(lastPage - 2) }
       }}>
-        {!ready ? <p className="pf-loading" role="status">{loadError ? '그림책을 불러오지 못했어요. 페이지를 새로고침해 주세요.' : '그림책을 펼칠 준비 중…'}</p> : <>
-          <div className={`pf-center pf-center--${center}${resetting || closing ? ' pf-center--resetting' : ''}`} onTransitionEnd={event => { if (event.target === event.currentTarget && event.propertyName === 'transform') setCentering(false) }}>
-            <HTMLFlipBook ref={flip} width={440} height={622} size="stretch" minWidth={100} maxWidth={590} minHeight={140} maxHeight={835} startPage={0} drawShadow flippingTime={turnDuration} usePortrait={false} startZIndex={0} autoSize maxShadowOpacity={0.5} showCover mobileScrollSupport clickEventForward={false} useMouseEvents={!reduced} swipeDistance={30} showPageCorners={!reduced} disableFlipByClick className="picture-flipbook" style={{}} renderOnlyPageLengthChange onInit={() => { engine.current = flip.current?.pageFlip() ?? null }} onFlip={onFlip} onChangeState={onState}>{pages}</HTMLFlipBook>
+        {!ready && <div className="pf-loading">
+          {downloadError || loadError ? <><p role="alert">그림책을 불러오지 못했어요.</p><button type="button" onClick={() => loadError ? window.location.reload() : retry()}>다시 불러오기</button></> : <>
+            <p role="status">1960년대로 돌아가는 중</p>
+            <progress aria-label="그림책 다운로드 진행률" value={progress.bytes} max={Math.max(1, progress.total)} />
+            <span>{progress.total ? Math.min(100, Math.floor(progress.bytes / progress.total * 100)) : 0}% · {progress.completed} / 18</span>
+            <small>{(progress.bytes / 1048576).toFixed(1)} / {(progress.total / 1048576).toFixed(1)} MB · {progress.speed >= 1048576 ? `${(progress.speed / 1048576).toFixed(1)} MB/s` : `${Math.round(progress.speed / 1024)} KB/s`}</small>
+          </>}
+        </div>}
+        {downloaded && <>
+          <div className={`pf-center pf-center--${center}${!ready ? ' pf-center--preparing' : ''}${resetting || closing ? ' pf-center--resetting' : ''}`} onTransitionEnd={event => { if (event.target === event.currentTarget && event.propertyName === 'transform') setCentering(false) }}>
+            <HTMLFlipBook ref={flip} width={440} height={622} size="stretch" minWidth={100} maxWidth={590} minHeight={140} maxHeight={835} startPage={0} drawShadow flippingTime={turnDuration} usePortrait={false} startZIndex={0} autoSize maxShadowOpacity={0.5} showCover mobileScrollSupport clickEventForward={false} useMouseEvents={!reduced} swipeDistance={30} showPageCorners={!reduced} disableFlipByClick className="picture-flipbook" style={{}} renderOnlyPageLengthChange onInit={() => {
+              engine.current = flip.current?.pageFlip() ?? null
+              void Promise.all(imageUrls.map((_, index) => loadSpread(index)))
+                .then(() => { if (alive.current) setReady(true) })
+                .catch(() => { if (alive.current) setLoadError(true) })
+            }} onFlip={onFlip} onChangeState={onState}>{pages}</HTMLFlipBook>
           </div>
-          {!locked && <button className={`pf-book-toggle${current === 0 || current === lastPage ? ' pf-book-toggle--cover' : ''}`} type="button" aria-label={current === 0 ? '표지를 열어 그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : '펼쳐진 그림책 덮기'} onClick={current === 0 || current === lastPage ? next : closeBook} />}
-          {closing && <div className={`pf-shut pf-shut--${closing}`} aria-hidden="true"><div className="pf-shut-left" style={{ backgroundImage: `url('${spreads[pageSpecs[current].spread]}')` }} /><div className="pf-shut-flap"><div className="pf-shut-face" style={{ backgroundImage: `url('${spreads[pageSpecs[current].spread]}')` }} /><div className="pf-shut-face pf-shut-back" style={{ backgroundImage: `url('${spreads[0]}')` }} /></div></div>}
-          {resetting && <div className="pf-reset-cover" aria-hidden="true"><div className="pf-reset-face" style={{ backgroundImage: `url('${spreads[0]}')` }} /><div className="pf-reset-face pf-reset-front" style={{ backgroundImage: `url('${spreads[0]}')` }} /></div>}
+          {ready && !locked && <button className={`pf-book-toggle${current === 0 || current === lastPage ? ' pf-book-toggle--cover' : ''}`} type="button" aria-label={current === 0 ? '표지를 열어 그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : '펼쳐진 그림책 덮기'} onClick={current === 0 || current === lastPage ? next : closeBook} />}
+          {closing && <div className={`pf-shut pf-shut--${closing}`} aria-hidden="true"><div className="pf-shut-left" style={{ backgroundImage: `url('${imageUrls[pageSpecs[current].spread]}')` }} /><div className="pf-shut-flap"><div className="pf-shut-face" style={{ backgroundImage: `url('${imageUrls[pageSpecs[current].spread]}')` }} /><div className="pf-shut-face pf-shut-back" style={{ backgroundImage: `url('${imageUrls[0]}')` }} /></div></div>}
+          {resetting && <div className="pf-reset-cover" aria-hidden="true"><div className="pf-reset-face" style={{ backgroundImage: `url('${imageUrls[0]}')` }} /><div className="pf-reset-face pf-reset-front" style={{ backgroundImage: `url('${imageUrls[0]}')` }} /></div>}
         </>}
 
       </div>
       <nav className="picture-reader-pagination" aria-label="그림책 페이지 이동"><button type="button" onClick={previous} disabled={!ready || current === 0 || locked} aria-label="그림책 이전 펼침면">{'<'}</button><p className="picture-reader-page-number" aria-live="polite">{pageLabel(current)}</p><button type="button" onClick={next} disabled={!ready || locked} aria-label={current === 0 ? '그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : current >= lastPage - 2 ? '마지막 장을 덮어 뒤표지 보기' : '그림책 다음 펼침면'}>{'>'}</button></nav>
     </div>
-    {unbound && <div className="picture-proof-gallery" aria-label="순서대로 펼쳐 놓은 그림책">{spreads.map((src, index) => <button key={src} type="button" onClick={() => setEnlarged(index)} aria-label={`${index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`} 크게 보기`}><img src={src} alt={index === 0 ? '앞표지와 뒤표지' : `${index * 2 - 1}–${index * 2}쪽`} loading="lazy" /><span>{index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`}</span></button>)}</div>}
+    {unbound && <div className="picture-proof-gallery" aria-label="순서대로 펼쳐 놓은 그림책">{imageUrls.map((src, index) => <button key={src} type="button" onClick={() => setEnlarged(index)} aria-label={`${index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`} 크게 보기`}><img src={src} alt={index === 0 ? '앞표지와 뒤표지' : `${index * 2 - 1}–${index * 2}쪽`} loading="lazy" /><span>{index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`}</span></button>)}</div>}
     {enlarged !== null && <ImageViewer images={spreads} initialIndex={enlarged} title="네가 잠들면 꿈꾸는 건 나" onClose={() => setEnlarged(null)} />}
   </section>
 }
