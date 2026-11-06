@@ -24,8 +24,8 @@ export const works: Work[] = [
   { id: 'eternal-sunshine', title: '인간은 별안간', href: 'https://mongledum.com/music?year=2025&album=001-%EC%9D%B8%EA%B0%84%EC%9D%80+%EB%B3%84%EC%95%88%EA%B0%84', category: '참여작', year: 2025, participation: true, image: '/images/works/eternal-sunshine.jpeg' },
   { id: 'mongledum-001', chronologicalOrder: 7, title: 'mongledum 001', category: '참여작', year: 2026, href: 'https://mongledum.com/music?year=2026&album=001-mongledum+001+%28feat.+%EA%B9%80%EB%A8%BC%EC%A7%80%29', format: 'EP', participation: true, image: '/images/works/mongledum-001-original.jpg', entries: [{ title: '물방울이 두근두근', roles: ['작사'] }, { title: '같지 않은 것과 같잖은 것', roles: ['작사'] }, { title: 'diib', roles: ['작사'] }, { title: '폭설', roles: ['작사'] }] },
   { id: 'dream-exhibition', chronologicalOrder: 2, title: '네가 잠들면 꿈꾸는 건 나', category: '전시', year: 2026, date: '2026. 4. 13. – 5. 31.', image: exhibition },
-  { id: 'our-dream', chronologicalOrder: 3, title: '당신이 말하면 꿈꾸는 건 우리 1', category: '이벤트', year: 2026, date: '2026. 4. 17.', image: event },
-  { id: 'our-dream-2', chronologicalOrder: 4, title: '당신이 말하면 꿈꾸는 건 우리 2', category: '이벤트', year: 2026, date: '2026. 5. 30.', image: event2 },
-  { id: 'our-dream-3', chronologicalOrder: 6, title: '당신이 말하면 꿈꾸는 건 우리 3 · 부산', category: '이벤트', year: 2026, date: '2026. 7. 24.', image: eventBusan },
+  { id: 'our-dream', chronologicalOrder: 3, title: '당신이 말하면 꿈꾸는 건 우리', category: '이벤트', year: 2026, date: '2026. 4. 17.', image: event },
+  { id: 'our-dream-2', chronologicalOrder: 4, title: '(또) 당신이 말하면 꿈꾸는 건 우리', category: '이벤트', year: 2026, date: '2026. 5. 30.', image: event2 },
+  { id: 'our-dream-3', chronologicalOrder: 6, title: '당신이 말하면 꿈꾸는 건 우리 in 부산', category: '이벤트', year: 2026, date: '2026. 7. 24.', image: eventBusan },
   { id: 'room', chronologicalOrder: 5, title: '부산인디북포트 《parkse0eum’s room》', category: '이벤트', year: 2026, date: '2026. 7. 24. – 30.', image: room, images: [room, room2, room3, room4, room5, room6] },
 ]

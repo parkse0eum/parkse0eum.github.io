@@ -19,7 +19,10 @@ function IconArtwork({ icon }: { icon: PageIcon }) {
 
 function Home() {
   const host = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => mountBook(host.current!), [])
+  useLayoutEffect(() => {
+    document.title = 'h0me - parkse0eum'
+    return mountBook(host.current!)
+  }, [])
 
   return <div ref={host} className="home-page">
 
