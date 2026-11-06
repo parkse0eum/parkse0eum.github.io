@@ -581,7 +581,6 @@ body:has(.image-viewer[open]){overflow:hidden}
 }
 
 .picture-book-headphones{color:#171717}
-.picture-book-headphones[aria-pressed=true]{color:#fff8b5}
 @media(max-width:650px){.picture-book-page--music-open .picture-book-body{margin-top:64px}}
 /* Leave enough trailing reading space to scroll the video fully off-screen,
    even when the mobile spread is much shorter than the viewport. */
