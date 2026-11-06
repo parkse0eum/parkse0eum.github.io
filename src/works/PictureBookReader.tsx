@@ -235,8 +235,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
           {downloadError || loadError ? <><p role="alert">그림책을 불러오지 못했어요.</p><button type="button" onClick={() => loadError ? window.location.reload() : retry()}>다시 불러오기</button></> : <>
             <p role="status">1960년대로 돌아가는 중</p>
             <progress aria-label="그림책 다운로드 진행률" value={progress.bytes} max={Math.max(1, progress.total)} />
-            <span>{progress.total ? Math.min(100, Math.floor(progress.bytes / progress.total * 100)) : 0}% · {progress.completed} / 18</span>
-            <small>{(progress.bytes / 1048576).toFixed(1)} / {(progress.total / 1048576).toFixed(1)} MB · {progress.speed >= 1048576 ? `${(progress.speed / 1048576).toFixed(1)} MB/s` : `${Math.round(progress.speed / 1024)} KB/s`}</small>
+            <span>{progress.total ? Math.min(100, Math.floor(progress.bytes / progress.total * 100)) : 0}%</span>
           </>}
         </div>}
         {downloaded && <>
@@ -254,7 +253,7 @@ export default function PictureBookReader({ unbound, onInteractionStateChange }:
         </>}
 
       </div>
-      <nav className="picture-reader-pagination" aria-label="그림책 페이지 이동"><button type="button" onClick={previous} disabled={!ready || current === 0 || locked} aria-label="그림책 이전 펼침면">{'<'}</button><p className="picture-reader-page-number" aria-live="polite">{pageLabel(current)}</p><button type="button" onClick={next} disabled={!ready || locked} aria-label={current === 0 ? '그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : current >= lastPage - 2 ? '마지막 장을 덮어 뒤표지 보기' : '그림책 다음 펼침면'}>{'>'}</button></nav>
+      <nav className="picture-reader-pagination" style={{ visibility: ready ? 'visible' : 'hidden' }} aria-label="그림책 페이지 이동"><button type="button" onClick={previous} disabled={!ready || current === 0 || locked} aria-label="그림책 이전 펼침면">{'<'}</button><p className="picture-reader-page-number" aria-live="polite">{pageLabel(current)}</p><button type="button" onClick={next} disabled={!ready || locked} aria-label={current === 0 ? '그림책 펼치기' : current === lastPage ? '책을 뒤집어 앞표지 보기' : current >= lastPage - 2 ? '마지막 장을 덮어 뒤표지 보기' : '그림책 다음 펼침면'}>{'>'}</button></nav>
     </div>
     {unbound && <div className="picture-proof-gallery" aria-label="순서대로 펼쳐 놓은 그림책">{imageUrls.map((src, index) => <button key={src} type="button" onClick={() => setEnlarged(index)} aria-label={`${index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`} 크게 보기`}><img src={src} alt={index === 0 ? '앞표지와 뒤표지' : `${index * 2 - 1}–${index * 2}쪽`} loading="lazy" /><span>{index === 0 ? '표지' : `${index * 2 - 1}–${index * 2} / 34쪽`}</span></button>)}</div>}
     {enlarged !== null && <ImageViewer images={spreads} initialIndex={enlarged} title="네가 잠들면 꿈꾸는 건 나" onClose={() => setEnlarged(null)} />}

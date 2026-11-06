@@ -604,5 +604,4 @@ body:has(.image-viewer[open]){overflow:hidden}
 .pf-loading progress::-webkit-progress-value{background:#777}
 .pf-loading progress::-moz-progress-bar{background:#777}
 .pf-loading span{font-size:12px;font-variant-numeric:tabular-nums}
-.pf-loading small{font-size:10px;color:#999;font-variant-numeric:tabular-nums}
 .pf-loading button{border:0;border-bottom:1px solid #aaa;background:none;padding:4px 0;font:inherit;color:#555;cursor:pointer}
