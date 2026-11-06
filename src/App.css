@@ -299,7 +299,7 @@ body { font-family: 'Pretendard', sans-serif; font-weight: 500; }
   width: 47%; height: 24%; left: 0; bottom: 3%;
 }
 [data-page="outside"] .book__icon:nth-child(2) {
-  width: 64%; height: 60%; right: 0; top: 0;
+  width: 64%; height: 60%; right: 12%; top: 0;
 }
 
 /* Two upright books share a centerline, with a 12% horizontal gutter. */
