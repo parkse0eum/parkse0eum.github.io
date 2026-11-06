@@ -1,0 +1,50 @@
+{
+  "to": {
+    "width": 1076,
+    "height": 1462
+  },
+  "blue-or-not": {
+    "width": 788,
+    "height": 1100
+  },
+  "dream-book": {
+    "width": 980,
+    "height": 1380
+  },
+  "chamomile": {
+    "width": 1200,
+    "height": 1200
+  },
+  "dream-song": {
+    "width": 300,
+    "height": 300
+  },
+  "eternal-sunshine": {
+    "width": 1200,
+    "height": 1200
+  },
+  "mongledum-001": {
+    "width": 3000,
+    "height": 2999
+  },
+  "dream-exhibition": {
+    "width": 2100,
+    "height": 2800
+  },
+  "our-dream": {
+    "width": 1080,
+    "height": 1440
+  },
+  "our-dream-2": {
+    "width": 2667,
+    "height": 3556
+  },
+  "our-dream-3": {
+    "width": 3000,
+    "height": 4000
+  },
+  "room": {
+    "width": 1013,
+    "height": 1350
+  }
+}

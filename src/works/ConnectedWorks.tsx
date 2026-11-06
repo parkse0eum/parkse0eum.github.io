@@ -1,8 +1,8 @@
 import type { Work } from './data'
+import ArchiveImage from './ArchiveImage'
 import { archiveUrl } from './navigation'
 
 import { dreamConnectionIds } from './connections'
-const stages: Record<string, string> = { 'dream-song': '음악', 'dream-book': '그림책', 'dream-exhibition': '전시' }
 
 export default function ConnectedWorks({ items, onOpen }: { items: Work[]; onOpen: (id: string) => void }) {
   const ordered = dreamConnectionIds.flatMap(id => items.find(item => item.id === id) ?? [])
@@ -11,7 +11,7 @@ export default function ConnectedWorks({ items, onOpen }: { items: Work[]; onOpe
       <a href={archiveUrl(item.id)} onClick={event => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
         event.preventDefault(); onOpen(item.id)
-      }}><div className="connected-path-art">{item.image && <img src={item.image} alt={`${stages[item.id]} ${item.title}`} />}</div></a>
+      }}><div className="connected-path-art"><ArchiveImage work={item} connected /></div></a>
     </li>)}</ol>
   </section>
 }

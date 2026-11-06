@@ -257,6 +257,7 @@ body:not(.is-open) .lep *, body.is-transitioning .lep * { pointer-events:none; }
   font-display: swap;
 }
 body { font-family: 'Pretendard', sans-serif; font-weight: 500; }
+.archive-loading{font-family:'Home Pretendard',sans-serif}
 .topbar strong { font-weight: 500; letter-spacing: -.05em; }
 .book {
   visibility: visible;

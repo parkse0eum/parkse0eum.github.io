@@ -1,4 +1,5 @@
 import ConnectedWorks from './ConnectedWorks'
+import ArchiveImage from './ArchiveImage'
 import { dreamConnectionIds } from './connections'
 import PictureBookDetail from './PictureBookDetail'
 import EventDialog from './EventDialog'
@@ -66,9 +67,9 @@ export default function WorksArchive() {
           <button className="archive-reset" onClick={reset}>필터 초기화</button>
         </div>
         <div className="archive-tools"><p className="archive-count" role="status">{visible.length} works</p><label className="archive-search"><span className="sr">작품 검색</span><input type="search" placeholder="검색" value={query} onChange={e => setQuery(e.target.value)} /></label></div>
-        {visible.length ? connection !== '전체' ? <ConnectedWorks items={visible} onOpen={openWork} /> : <div className="archive-grid">{visible.map(work => {
-          const className = `work-card${work.genre === '출판물' || work.genre === '그림책' ? ' work-card--book' : ''}`
-          const artwork = <div className={`work-art work-art--${work.category === '음악' || work.category === '참여작' ? 'music' : 'paper'}`}>{work.image ? <img src={work.image} alt="" loading="lazy" /> : <div className="work-type-cover"><span>{work.title}</span></div>}</div>
+        {visible.length ? connection !== '전체' ? <ConnectedWorks items={visible} onOpen={openWork} /> : <div className="archive-grid">{visible.map((work, index) => {
+          const className = `work-card work-card--${work.id}${work.genre === '출판물' || work.genre === '그림책' ? ' work-card--book' : ''}`
+          const artwork = <div className={`work-art work-art--${work.category === '음악' || work.category === '참여작' ? 'music' : 'paper'}`}>{work.image ? <ArchiveImage work={work} priority={index < 2} /> : <div className="work-type-cover"><span>{work.title}</span></div>}</div>
           return work.href
             ? <a className={className} key={work.id} href={work.href} aria-label={`${work.title} — 몽글덤 음악 페이지로 이동`}>{artwork}</a>
             : <a className={className} aria-label={`${work.title} 상세 보기`} key={work.id} href={archiveUrl(work.id)} onClick={e => { if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) { e.preventDefault(); openWork(work.id) } }}>{artwork}</a>

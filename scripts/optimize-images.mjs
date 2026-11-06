@@ -17,8 +17,19 @@ for (let offset = 0; offset < images.length; offset += 3) {
   await Promise.all(images.slice(offset, offset + 3).map(async file => {
     const output = file.replace(/\.(png|jpe?g)$/i, '.webp')
     const before = (await stat(file)).size
-    const image = sharp(file).rotate().resize({ width: 1800, height: 1800, fit: 'inside', withoutEnlargement: true })
+    const limit = file.includes('/images/brand/parkse0eum-black') ? 160 : 1800
+    const image = sharp(file).rotate().resize({ width: limit, height: limit, fit: 'inside', withoutEnlargement: true })
     await image.webp({ quality: file.includes('dream-book/') || file.includes('letters-') ? 92 : 88, alphaQuality: 100, lossless: file.includes('mask'), effort: 5 }).toFile(output)
+    // Archive cards never need the full-resolution detail artwork.
+    if (file.includes('/assets/') || /\/images\/works\/[^/]+$/.test(file)) {
+      const thumbnails = path.join(directory, 'images/archive')
+      await mkdir(thumbnails, { recursive: true })
+      for (const width of [240, 480]) {
+        await sharp(file).rotate().resize({ width, withoutEnlargement: true })
+          .webp({ quality: 60, alphaQuality: 100, effort: 6 })
+          .toFile(path.join(thumbnails, `${path.basename(output, '.webp')}-${width}.webp`))
+      }
+    }
     if (file.includes('dream-book/spread-')) {
       const mobileDirectory = path.join(path.dirname(file), 'mobile')
       await mkdir(mobileDirectory, { recursive: true })
