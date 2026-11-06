@@ -106,14 +106,14 @@ function initBook(host: HTMLElement, signal: AbortSignal) {
   function render() {
     const sp = spread * (1 + breathe * br);
     /* the chain: every card starts where the one before ends, turned by its own fold, one way or the other */
-    // Leave an 18° gap at alternating hinges so the resting house reads as
-    // folded paper rather than a flat cover. The illustrated face keeps its angle.
+    // The same connected folds are used at rest and throughout opening/closing.
     // Both covers stay attached to the ends; neither has a separate rotation.
     for (let i = 0; i < N; i++) {
-      const closed = i % 2 === 0 ? 148 : -14;
+      const closed = i % 2 === 0 ? 148 : -24;
       const unfolded = leaves[i].sign * foldOf(i, sp);
       leaves[i].phi = closed + (unfolded - closed) * binding.open;
     }
+    host.style.setProperty('--home-ink-opacity', String(clamp((binding.open - 0.15) / 0.35, 0, 1)));
     X[0] = Z[0] = 0;
     for (let i = 0; i < N; i++) {
       const r = leaves[i].phi * RAD;
@@ -528,9 +528,23 @@ export function mountBook(host: HTMLElement) {
   const backgroundUrl = getComputedStyle(document.body).backgroundImage.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
   const background = new Image();
   if (backgroundUrl) background.src = backgroundUrl;
+  // Paper artwork defines the resting object's shape and colors. Prepare it
+  // with the cover; printed words and work thumbnails belong to the next stage.
+  const paperUrls = new Set<string>();
+  host.querySelectorAll<HTMLElement>('[data-home-background]').forEach(element => {
+    const url = element.dataset.homeBackground!;
+    element.style.backgroundImage = `url("${url}")`;
+    paperUrls.add(url);
+  });
+  const maskUrl = getComputedStyle(host.querySelector<HTMLElement>('.cover-board')!).maskImage.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
+  if (maskUrl) paperUrls.add(maskUrl);
+  const paperReady = Promise.all([...paperUrls].map(url => {
+    const image = new Image(); image.src = url; return image.decode();
+  }));
   const coverReady = Promise.all([
     coverImage.decode(),
     backgroundUrl ? background.decode() : Promise.resolve(),
+    paperReady,
     document.fonts.load('400 14px Neujoh'),
   ]).then(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
     if (!signal.aborted) host.dataset.homeReady = 'true';
@@ -538,17 +552,12 @@ export function mountBook(host: HTMLElement) {
   }))));
   // A failed image must not reveal the raw inner paper either.
   void coverReady.catch(() => {});
-  // Keep hidden artwork off the network until the visitor opens the house.
-  // Decode before moving so images do not pop in during the fold animation.
+  // Work thumbnails wait until the visitor opens the house; decode them before
+  // moving so the printed content never pops in during the fold animation.
   let artwork: Promise<void> | undefined;
   function prepareArtwork() {
     if (artwork) return artwork;
     const urls = new Set<string>();
-    host.querySelectorAll<HTMLElement>('[data-home-background]').forEach(element => {
-      const url = element.dataset.homeBackground!;
-      element.style.backgroundImage = `url("${url}")`;
-      urls.add(url);
-    });
     host.querySelectorAll<SVGImageElement>('[data-home-src]').forEach(element => {
       const url = element.dataset.homeSrc!;
       element.setAttribute('href', url);

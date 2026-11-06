@@ -43,7 +43,12 @@ body { min-height: 100svh;
   top: var(--pad);
   width: 0;
   height: 0;
-  transform-style: preserve-3d; }
+  /* Project each leaf using the same viewpoint, then honor the depth order
+     calculated by the binding engine. Oversized cover art must not intersect
+     a neighboring paper face in the browser's shared 3D compositor. */
+  transform-style: flat;
+  perspective: inherit;
+  perspective-origin: 0 calc((var(--card-h) + var(--pad) + var(--pad-low)) * -.3 - var(--pad)); }
 
 .lep__shadow { position: absolute;
   left: 50%;
@@ -123,9 +128,7 @@ body { font-family:system-ui,-apple-system,'Apple SD Gothic Neo',sans-serif;back
 .home-page .lep,.home-page .home-bottom-nav{opacity:0;transition:opacity .24s ease}
 .home-page[data-home-ready="true"] .lep,.home-page[data-home-ready="true"] .home-bottom-nav{opacity:1}
 .home-page:not([data-home-ready="true"]) .cover-hit,.home-page:not([data-home-ready="true"]) .home-bottom-nav{pointer-events:none}
-body:not(.is-open):not(.is-transitioning) .home-page .leaf__face--front,
-body:not(.is-open):not(.is-transitioning) .home-page .lep__boards{display:none}
-body:not(.is-open):not(.is-transitioning) .home-page .leaf:not(.leaf--first) .leaf__face--back{background:linear-gradient(90deg,#ddd6c9,#f7f1e7 20%,#f7f1e7 88%,#e2dacb)}
+.home-page .book{opacity:var(--home-ink-opacity,0)}
 @media(prefers-reduced-motion:reduce){.home-page .lep,.home-page .home-bottom-nav{transition:none}}
 
 .is-open .lep { visibility:visible;pointer-events:auto; }
