@@ -10,9 +10,10 @@
     <meta property="og:url" content="https://parkse0eum.com/" />
     <title>h0me - parkse0eum</title>
     <style>
-      .eum-loading{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:.08em;background:#fffdf4;color:#433b3e;font:400 24px Georgia,serif;letter-spacing:.06em}
+      @font-face{font-family:"Loading Pretendard";src:url("/fonts/Home-Pretendard.woff2") format("woff2");font-weight:400;font-display:swap}
+      .eum-loading{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:0;background:#fffdf4;color:#433b3e;font:400 20px "Loading Pretendard",sans-serif;letter-spacing:-.025em}
       .eum-loading span{opacity:0;animation:eum-letter 1.65s steps(1,end) infinite;animation-delay:calc(var(--letter) * .11s)}
-      .eum-loading span:nth-child(4){margin-left:.4em}
+      .eum-loading span:nth-child(4){margin-left:.28em}
       @keyframes eum-letter{0%{opacity:0}8%,72%{opacity:1}85%,100%{opacity:0}}
       .home-page[data-home-ready="true"] .eum-loading{display:none}
       @media(prefers-reduced-motion:reduce){.eum-loading span{animation:none;opacity:1}}
