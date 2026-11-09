@@ -3,12 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-circle-96.png" />
-    <link rel="shortcut icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-circle-96.png?v=4" />
+    <link rel="shortcut icon" href="/favicon.ico?v=4" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4" />
     <link rel="canonical" href="https://parkse0eum.com/" />
     <meta property="og:url" content="https://parkse0eum.com/" />
     <title>h0me - parkse0eum</title>
+    <style>
+      .eum-loading{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:.08em;background:#fffdf4;color:#433b3e;font:400 24px Georgia,serif;letter-spacing:.06em}
+      .eum-loading span{opacity:0;animation:eum-letter 1.65s steps(1,end) infinite;animation-delay:calc(var(--letter) * .11s)}
+      .eum-loading span:nth-child(4){margin-left:.4em}
+      @keyframes eum-letter{0%{opacity:0}8%,72%{opacity:1}85%,100%{opacity:0}}
+      .home-page[data-home-ready="true"] .eum-loading{display:none}
+      @media(prefers-reduced-motion:reduce){.eum-loading span{animation:none;opacity:1}}
+    </style>
     <script>
       if (new URLSearchParams(location.search).get('view') !== 'works') {
         const cover = document.createElement('link');
@@ -19,6 +27,7 @@
     <script defer src="/vendor/gsap.min.js"></script>
   </head>
   <body>
+    <div id="boot-loading" class="eum-loading" role="status" aria-label="페이지를 불러오는 중"><span style="--letter:0" aria-hidden="true">e</span><span style="--letter:1" aria-hidden="true">u</span><span style="--letter:2" aria-hidden="true">m</span><span style="--letter:3" aria-hidden="true">e</span><span style="--letter:4" aria-hidden="true">u</span><span style="--letter:5" aria-hidden="true">m</span></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

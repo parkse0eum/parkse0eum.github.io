@@ -1,9 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import sharp from 'sharp'
 
-// Clip the supplied photograph exactly, without redrawing or recoloring it.
-const source = await readFile('src/assets/brand/favicon-original.jpg')
-const svg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1170" height="1170" viewBox="0 0 1170 1170"><defs><clipPath id="round"><circle cx="585" cy="585" r="585"/></clipPath></defs><image width="1170" height="1170" href="data:image/jpeg;base64,${source.toString('base64')}" clip-path="url(#round)"/></svg>`)
+// Circular swatch matching the supplied pale yellow reference.
+const svg = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="362" height="362" viewBox="0 0 362 362"><circle cx="181" cy="181" r="181" fill="#fff8b5"/></svg>')
 for (const [size, file] of [[96, 'favicon-circle-96.png'], [180, 'apple-touch-icon.png']]) {
   await sharp(svg).resize(size, size).png().toFile(`public/${file}`)
 }

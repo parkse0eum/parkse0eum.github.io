@@ -7,6 +7,10 @@ import './App.css'
 const WorksArchive = lazy(() => import('./works/WorksArchive'))
 import { archiveUrl, navigate, useLocationSearch } from './works/navigation'
 
+function Loading() {
+  return <div className="eum-loading" role="status" aria-label="페이지를 불러오는 중">{Array.from('eumeum', (letter, index) => <span key={index} style={{ '--letter': index } as import('react').CSSProperties} aria-hidden="true">{letter}</span>)}</div>
+}
+
 function IconArtwork({ icon }: { icon: PageIcon }) {
   const [width, height] = icon.source
   const [x, y, w, h] = icon.crop ?? [0, 0, width, height]
@@ -26,6 +30,7 @@ function Home() {
 
   return <div ref={host} className="home-page">
 
+    <Loading />
     <main className="stage">
       <div className="cover-intro"><button className="cover-hit" id="coverHit" type="button" aria-expanded="false" aria-controls="accordionBook" aria-label="집 표지를 열고 아코디언북 펼치기" /></div>
       <section className="lep" id="accordionBook" role="region" aria-roledescription="캐러셀" aria-label="박서음의 아코디언북" data-lep="" inert aria-hidden="true">
@@ -74,5 +79,6 @@ function SiteHeader() {
 
 export default function App() {
   const search = useLocationSearch()
-  return <><SiteHeader />{new URLSearchParams(search).get('view') === 'works' ? <Suspense fallback={<div className="archive-loading" role="status">이야기를 펼치는 중…</div>}><WorksArchive /></Suspense> : <Home />}</>
+  useLayoutEffect(() => { document.getElementById('boot-loading')?.remove() }, [])
+  return <><SiteHeader />{new URLSearchParams(search).get('view') === 'works' ? <Suspense fallback={<Loading />}><WorksArchive /></Suspense> : <Home />}</>
 }

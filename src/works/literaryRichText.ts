@@ -2519,7 +2519,7 @@ export const literaryRichText: Record<string, LiteraryParagraph[]> = {
     {
       "runs": [
         {
-          "text": "*웹페이지 기준으로는 아래쪽(편지 봉투를 클릭해보시와요).",
+          "text": "* 웹페이지 기준으로는 아래쪽(편지 봉투를 클릭해주세요).",
           "style": {
             "font": "serif",
             "size": 0.8,
