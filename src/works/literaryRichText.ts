@@ -2503,10 +2503,26 @@ export const literaryRichText: Record<string, LiteraryParagraph[]> = {
     {
       "runs": [
         {
-          "text": "오른편의 이 시는 내가 쓴 것이기도 하고 너희들이 쓴 것이기도 하다(물론 인공지능도 살짝 쿵 끼어들었다). 제목은 읽는 이가 마음대로 정해주세요.",
+          "text": "오른편*의 이 시는 내가 쓴 것이기도 하고 너희들이 쓴 것이기도 하다(물론 인공지능도 살짝 쿵 끼어들었다). 제목은 읽는 이가 마음대로 정해주세요.",
           "style": {
             "font": "serif",
             "size": 1.0,
+            "bold": false,
+            "italic": false,
+            "underline": false
+          }
+        }
+      ],
+      "center": false,
+      "heading": false
+    },
+    {
+      "runs": [
+        {
+          "text": "*웹페이지 기준으로는 아래쪽(편지 봉투를 클릭해보시와요).",
+          "style": {
+            "font": "serif",
+            "size": 0.8,
             "bold": false,
             "italic": false,
             "underline": false

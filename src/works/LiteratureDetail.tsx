@@ -1,4 +1,6 @@
 import BookNavigation from './BookNavigation'
+import EnvelopeLetter from './EnvelopeLetter'
+import TearableStationery from './TearableStationery'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { literaryRichText } from './literaryRichText'
 import type { Work } from './data'
@@ -59,6 +61,8 @@ export default function LiteratureDetail({ work, book }: { work: Work; book: Boo
             <h2 id={`title-${entry.id}`}>{entry.title}</h2>
             <div className="literary-text">{literaryRichText[entry.id]?.map((paragraph, index) => {
               if (paragraph.gap) return <div key={index} className="literary-gap" style={{ height: `${paragraph.gap * 1.4}em` }} aria-hidden="true" />
+              if (work.id === 'to' && paragraph.image === '/images/works/letters-original-page.jpg') return <EnvelopeLetter key={index} />
+              if (work.id === 'to' && paragraph.image === '/images/works/letters-stationery.jpg') return <TearableStationery key={index} />
               if (paragraph.image) return <a key={index} className="literary-original" href={paragraph.image} target="_blank" rel="noopener noreferrer"><img src={paragraph.image} alt={paragraph.alt} loading="lazy" /></a>
               const Tag = paragraph.heading ? 'h3' : 'p'
               return <Tag key={index} className={paragraph.center ? 'literary-centered' : undefined}>{paragraph.runs?.map((run, ri) => <span key={ri} style={{ fontFamily: run.style.font === 'sans' ? "'Pretendard', sans-serif" : "'Nanum Myeongjo', serif", fontSize: `${run.style.size}em`, fontWeight: run.style.bold ? 700 : 400, fontStyle: run.style.italic ? 'italic' : undefined, textDecoration: run.style.underline ? 'underline' : undefined }}>{run.text}</span>)}</Tag>

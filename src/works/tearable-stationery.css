@@ -1,0 +1,10 @@
+.tearable-stationery{position:relative;margin:40px 0;width:100%;isolation:isolate}
+.tearable-sheet{display:block;width:100%;height:auto;aspect-ratio:1100/1595;overflow:visible;filter:drop-shadow(0 2px 3px #4d412514);user-select:none;-webkit-user-select:none}
+.perforation-grip{position:absolute;left:7.8182%;top:0;width:92.1818%;height:100%;cursor:grab;touch-action:pan-y;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.perforation-grip:active{cursor:grabbing}
+.perforation-grip:focus-visible{outline:1px dashed #8b8270;outline-offset:5px}
+.tear-fibre-shadow{fill:none;stroke:#c4bcaa;stroke-width:1.1;stroke-linecap:round;opacity:.65;pointer-events:none}
+.stationery-reset{position:absolute;right:0;bottom:-38px;width:36px;height:36px;border:0;background:none;color:#756e61;font:22px/1 sans-serif;cursor:pointer}
+.stationery-reset:focus-visible{outline:2px solid #827562;outline-offset:3px}
+
+.stationary-tear-strip{pointer-events:none}
