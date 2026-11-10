@@ -24,7 +24,7 @@ function IconArtwork({ icon }: { icon: PageIcon }) {
 function Home() {
   const host = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
-    document.title = 'h0me - parkse0eum'
+    document.title = '박서음 | parkse0eum'
     return mountBook(host.current!)
   }, [])
 
