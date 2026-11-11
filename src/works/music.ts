@@ -1,4 +1,5 @@
 export type MusicDetail = {
+  videoUrl: string
   releaseDate: string
   label: string
   introduction: string
@@ -12,6 +13,7 @@ export type MusicDetail = {
 // Release metadata and credits cross-checked against the distributor and Bugs album pages.
 export const music: Record<string, MusicDetail> = {
   chamomile: {
+    videoUrl: 'https://youtu.be/xrPbGzLnDrg?si=PFQB-eMIJfjcrAYc',
     releaseDate: '2022. 05. 04.',
     label: '최소우주주식회사',
     source: 'https://music.bugs.co.kr/album/20465648',
@@ -89,6 +91,7 @@ export const music: Record<string, MusicDetail> = {
     ],
   },
   'dream-song': {
+    videoUrl: 'https://youtu.be/VejbjQwBUts?si=CD1ND-wuAnyGJAkm',
     releaseDate: '2023. 10. 25.',
     label: 'parkse0eum',
     source: 'https://music.bugs.co.kr/album/20599115',

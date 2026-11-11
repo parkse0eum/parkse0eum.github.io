@@ -82,6 +82,11 @@ body:has(.works-page){background:#fff;color:#171717;overflow:auto}
 /* Cover, title, and listening links form one header above a full-width rule. */
 .detail-page-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr);gap:6%;max-width:1800px;padding:65px 5% 85px;min-height:520px}
 .detail-page-art{position:static}
+.detail-page-art.detail-page-art--playable{position:relative}
+.album-video-link{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgb(0 0 0 / 35%);opacity:0;transition:opacity .2s ease}
+.album-video-link svg{width:64px;height:64px;fill:#fff}
+.detail-page-art--playable:hover .album-video-link,.album-video-link:focus-visible{opacity:1}
+@media(prefers-reduced-motion:reduce){.album-video-link{transition:none}}
 .detail-page-art img{max-height:600px}
 .detail-page-info{padding-top:0}
 .detail-page-category{font-size:15px;margin-bottom:35px}

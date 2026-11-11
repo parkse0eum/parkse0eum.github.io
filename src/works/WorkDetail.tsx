@@ -70,8 +70,11 @@ export default function WorkDetail({ work }: { work: Work }) {
     {work.category === '문학' && <BookNavigation currentId={work.id} />}
     <article>
       <div className="detail-page-layout" ref={layout}>
-        <div className={`detail-page-art${work.genre ? ' detail-page-art--book' : ''}`}>
+        <div className={`detail-page-art${work.genre ? ' detail-page-art--book' : ''}${album ? ' detail-page-art--playable' : ''}`}>
           {work.image && <img ref={cover} src={work.image} alt={`${work.title} ${album ? '앨범 재킷' : '대표 이미지'}`} />}
+          {work.image && album && <a className="album-video-link" href={album.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${work.title} 유튜브에서 재생 (새 탭)`}>
+            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M17 9 L39 24 L17 39 Z" /></svg>
+          </a>}
         </div>
         <div className="detail-page-info" ref={info}>
           <p className="detail-page-category">{work.category}</p>
