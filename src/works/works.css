@@ -586,6 +586,8 @@ body:has(.image-viewer[open]){overflow:hidden}
 .album-related-links{position:absolute;left:0;right:0;top:var(--music-related-top);height:var(--music-related-height);margin:0;justify-content:center;gap:4px;font-size:12px;line-height:1.35}
 .album-related-links[data-compact=true]{flex-direction:row;align-items:center;justify-content:flex-start;gap:14px}
 }
+.album-related-links a{font-size:13px;line-height:16.2px}
+@media(max-width:650px){.album-related-links a{line-height:21.6px}}
 
 .picture-book-headphones{color:#171717}
 @media(max-width:650px){.picture-book-page--music-open .picture-book-body{margin-top:64px}}
