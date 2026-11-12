@@ -343,8 +343,11 @@ body:has(.event-dialog[open]){overflow:hidden}
 .picture-book-heading{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;gap:50px;max-width:1200px;margin:auto;padding:65px 5% 50px}
 .picture-book-heading .detail-page-category{margin:0 0 20px}
 .picture-book-heading h1{font-size:clamp(28px,3vw,44px);font-weight:500;letter-spacing:-.035em;line-height:1.45;word-break:keep-all;margin:0;outline:none}
-.picture-book-information{font-size:14px;line-height:1.9}
-.picture-book-information p{margin:6px 0 0}
+.picture-book-information{justify-self:end;font-size:14px;line-height:1.9}
+.picture-book-credits{margin-top:18px;font-size:14px;line-height:1.9}
+.picture-book-credits p{margin:4px 0 0}
+.picture-book-exhibition-link{color:inherit;font:inherit;text-decoration:none}
+.picture-book-exhibition-link:hover{text-decoration:underline;text-underline-offset:4px}
 .picture-book-body{margin:0 2%;padding:55px 3% 75px;border-top:1px solid #111}
 .picture-reader{max-width:1100px;margin:auto}
 .picture-reader-stage{padding:24px 10px 32px;perspective:1800px;outline-offset:4px}
